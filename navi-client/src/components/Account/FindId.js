@@ -4,15 +4,14 @@ import { Link } from 'react-router-dom';
 import "../../style/Account/FindId.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
+import Header from "../Service/Header";
 
-function FindId() {
+function FindId({ isDarkMode, toggleDarkMode }) {
   const [isFocused, setIsFocused] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem('dark-mode');
-    return savedMode === 'enabled';
-  });
 
   return (
+    <>
+    <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
     <div className='FindId'>
       <div className={`findid_box ${isDarkMode ? 'dark-mode' : ''}`}>
         <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findid_logo'/></Link>
@@ -32,6 +31,7 @@ function FindId() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

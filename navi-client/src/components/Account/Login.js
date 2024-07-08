@@ -3,17 +3,15 @@ import { Link } from 'react-router-dom';
 import "../../style/Account/Login.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
+import Header from "../Service/Header";
 
-function Login() {
+function Login({ isDarkMode, toggleDarkMode }) {
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
 
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem('dark-mode');
-    return savedMode === 'enabled';
-  });
-
   return (
+    <>
+    <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
     <div className='Login'>
       <div className={`login_box ${isDarkMode ? 'dark-mode' : ''}`}>
         <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo'/></Link>
@@ -41,6 +39,7 @@ function Login() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
