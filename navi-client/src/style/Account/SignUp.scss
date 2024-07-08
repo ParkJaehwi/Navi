@@ -1,0 +1,145 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  height: 100%;
+}
+body.dark-mode{
+  background-color: #303030;
+}
+.SignUp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .signup_box{
+    box-shadow: 0 0.1vw 0.2vw rgba(0, 0, 0, 0.1), 0 0.1vw 0.2vw rgba(0, 0, 0, 0.1);
+    width: 25vw;
+    height: 62vh;
+    align-items: center;
+    position: absolute;
+    top: 19%;
+    background-color: white;
+    border-radius: 0.5vw;
+    &.dark-mode{
+      background-color: #272727;
+    }
+    
+    .signup_logo{
+      margin-left: 7.3vw;
+      margin-top: 5vh;
+      width: 10vw;
+    }
+    .signup_main{
+      width: 15vw;
+      height: 17vh;
+      margin-left: 5vw;
+      margin-top: 4vh;
+      p{
+        height: 1vh;
+        width: 5vw;
+        font-size: 0.75vw;
+        color: rgb(168, 168, 168);
+        margin-bottom: 1vh;
+        transition: color 0.3s ease;
+        margin-top: 2vh;
+      }
+      p.focused{
+        color: #F8F252;
+      }
+      .signup_input{
+        width: 14.4vw;
+        height: 4vh;
+        border-radius: 0.5vw;
+        border: 0.03vw solid rgb(168, 168, 168);
+        background-color: white;
+        box-shadow: 0 0.05vw 0.05vw rgba(0, 0, 0, 0.1), 0 0.05vw 0.05vw rgba(0, 0, 0, 0.1);
+        font-size: 0.8vw;
+        padding-left: 0.4vw;
+        outline: none;
+        transition: border-color 0.3s ease;
+        &.dark-mode {
+          background-color: #393939;
+          border: 0.03vw solid #303030;
+        }
+      }
+      
+      .signup_input:focus{
+        border-color: #F8F252;
+      }
+      .signupBtn{
+        width: 15vw;
+        height: 4vh;
+        border-radius: 0.5vw;
+        border: none;
+        margin-top: 3vh;
+        font-size: 0.8vw;
+        color: black;
+        background-color: #F8F252;
+        transition: background-color 0.5s ease;
+      }
+
+      .signupBtn:hover{
+        background-color: #a9a46d;
+        cursor: pointer;
+      }
+      .signupBtn:active{
+        transform: scale(0.99, 0.99);
+      }
+    }
+    .signup_menu{
+      width: 18vw;
+      text-align: center;
+      height: 2vh;
+      margin-top: 22.5vh;
+      margin-left: 4.4vw;
+      .signup_link{
+        text-decoration: none;
+        color: rgb(168, 168, 168);;
+        margin-right: 2vw;
+        font-size: 0.7vw;
+        transition: color 0.3s ease;
+        &.dark-mode {
+          color: #ccc; // 기본 색상 설정
+        }
+
+        &:hover {
+          color: rgb(0, 0, 0); // 다크 모드에서 색상이 보장되도록 설정
+          text-decoration: underline;
+        }
+      }
+      .signup_link:hover{
+        color: black;
+        text-decoration: underline;
+        &.dark-mode:hover{
+          color: white;
+        }
+      }
+    }
+  }
+  .toggle-button {
+    padding: 0.6944vw 1.3889vw;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 1.1111vw 0;
+  }
+  .password-confirm-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  
+    .password-match-indicator {
+      position: absolute;
+      right: -1.7vw;
+      font-weight: bold;
+  
+      &.match {
+        color: green;
+      }
+  
+      &.mismatch {
+        color: red;
+      }
+    }
+  }
+}
