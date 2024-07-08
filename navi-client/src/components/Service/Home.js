@@ -1,11 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+
+import Header from "./Header";
+import Footer from './Footer';
 
 function Home() {
   return (
     <div>
+      <Header/>
       <h1>Home</h1>
-      <Link to="/Login">로그인</Link>
+
+      <Footer/>
     </div>
   )
 }

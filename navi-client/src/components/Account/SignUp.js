@@ -28,16 +28,7 @@ function SignUp() {
     }
   }, [password, confirmPassword]);
 
-  useEffect(() => {
-      // 다크 모드 클래스를 body에 추가합니다.
-      if (isDarkMode) {
-          document.body.classList.add('dark-mode');
-          localStorage.setItem('dark-mode', 'enabled');
-      } else {
-          document.body.classList.remove('dark-mode');
-          localStorage.setItem('dark-mode', 'disabled');
-      }
-  }, [isDarkMode]);
+  
 
   return (
     <div className='SignUp'>
@@ -86,12 +77,9 @@ function SignUp() {
           <button className={`signupBtn ${isDarkMode ? 'dark-mode' : ''}`}>회원가입</button>
         </div>
         <div className='signup_menu'>
-          <Link to="/Login" className={`signup_link ${isDarkMode ? 'dark-mode' : ''}`}>로그인 하러가기</Link>
+          <Link to="/Login" className={`signup_link ${isDarkMode ? 'dark-mode' : ''}`}>로그인으로 돌아가기</Link>
         </div>
       </div>
-      <button onClick={() => setIsDarkMode(prevMode => !prevMode)} className="toggle-button">
-        Toggle Dark Mode
-      </button>
     </div>
   );
 }

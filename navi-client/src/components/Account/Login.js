@@ -13,17 +13,6 @@ function Login() {
     return savedMode === 'enabled';
   });
 
-  useEffect(() => {
-      // 다크 모드 클래스를 body에 추가합니다.
-      if (isDarkMode) {
-          document.body.classList.add('dark-mode');
-          localStorage.setItem('dark-mode', 'enabled');
-      } else {
-          document.body.classList.remove('dark-mode');
-          localStorage.setItem('dark-mode', 'disabled');
-      }
-  }, [isDarkMode]);
-
   return (
     <div className='Login'>
       <div className={`login_box ${isDarkMode ? 'dark-mode' : ''}`}>
@@ -51,9 +40,6 @@ function Login() {
           <Link to="/SignUp" className={`login_link ${isDarkMode ? 'dark-mode' : ''}`}>회원가입</Link>
         </div>
       </div>
-      <button onClick={() => setIsDarkMode(prevMode => !prevMode)} className="toggle-button">
-        Toggle Dark Mode
-      </button>
     </div>
   );
 }
