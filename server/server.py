@@ -135,23 +135,25 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)
-load_dotenv()
+
+# 상위 폴더에 있는 .env 파일 경로 지정
+load_dotenv(dotenv_path='../.env')
 GPT_API_KEY = os.getenv('GPT_API_KEY')
-client = openai.OpenAI(api_key=GPT_API_KEY)
+
+# 최신 openai 라이브러리 초기화 방법
+openai.api_key = GPT_API_KEY
 
 def gpt_api():
-  completion = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "system", "content": "너는 여행 동선을 짜주는 ai비서야"},
-        {"role": "user", "content": "아쿠아플라넷 제주: 제주 서귀포시 성산읍 섭지코지로 95 아쿠아플라넷 제주 산방산 탄산온천: 제주 서귀포시 안덕면 사계북로41번길 192 제주항공우주박물관: "
-  + "제주 서귀포시 안덕면 녹차분재로 218 제주항공우주박물관 대포주상절리: 제주 서귀포시 이어도로 36-24 더본 호텔 제주 :제주 서귀포시 색달로 18"+"내가 준 데이터 중에서 3개만 뽑아서 제주도 1박 2일 일정 짜주고 리턴 데이터는 json으로"}
-    ],
-    # max_tokens=100
-  )
-  data = completion.choices[0].message.content
-  print(completion.choices[0].message.content)
-  return jsonify({'data': data})
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "너는 여행 동선을 짜주는 ai비서야"},
+            {"role": "user", "content": "아쿠아플라넷 제주: 제주 서귀포시 성산읍 섭지코지로 95 아쿠아플라넷 제주 산방산 탄산온천: 제주 서귀포시 안덕면 사계북로41번길 192 제주항공우주박물관: 제주 서귀포시 안덕면 녹차분재로 218 제주항공우주박물관 대포주상절리: 제주 서귀포시 이어도로 36-24 더본 호텔 제주 :제주 서귀포시 색달로 18 내게 준 데이터 중에서 3개만 뽑아서 제주도 1박 2일 일정 짜주고 리턴 데이터는 json으로"}
+        ]
+    )
+    data = response.choices[0].message['content']
+    print(data)
+    return jsonify({'data': data})
 
 @app.route('/ask', methods=['GET'])
 def ask_gpt():

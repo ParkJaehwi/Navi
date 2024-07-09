@@ -10,6 +10,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 venv\Scripts\activate
 pip install Flask
 pip install flask-cors
+pip install openai
+pip install python-dotenv
 
 // 서버 실행
 
