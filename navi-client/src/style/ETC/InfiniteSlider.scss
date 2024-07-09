@@ -15,7 +15,11 @@
 .slick-slide {
   display: flex;
   align-items: center; /* 이미지가 세로로 중앙에 위치하도록 */
-  justify-content: center; /* 이미지가 가로로 중앙에 위치하도록 */
+  justify-content: center;
+  background-color: #FFFFFF; /* 이미지가 가로로 중앙에 위치하도록 */
+}
+.Slider-dev.dark-mode .slick-slide {
+  background-color: #1A1A1A; /* 다크 모드 배경색 */
 }
 
 /* 이미지 스타일 */

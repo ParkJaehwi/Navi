@@ -1,9 +1,64 @@
-.homeBtn{
-  width: 10vw;
-  height: 5vh;
-  margin: 3vw;
-  background-color: rgb(128, 127, 127);
-  border: none;
-  color: white;
-  font-size: 1vw;
+.home_container{
+  width: 99.99%;
+  height: 90vh;
+  display: inline-block;
+  .homeText1,.homeText2{
+    color: rgb(25, 25, 25);
+    position: relative;
+    top: 20vh;
+    left: 12vw;
+    &.dark-mode{
+      color: rgb(232, 232, 232);
+    }
+  }
+  .homeText1{
+    font-size: 2.6vw;
+    font-weight: bold;
+    margin: 1vw;
+  }
+  .homeText2{
+    font-size: 0.7vw;
+    margin-left: 1vw;
+  }
+  .homeLink{
+    padding: 1.3vh 3vw;
+    font-size: 0.9vw;
+    color: rgb(25, 25, 25);
+    text-decoration: none;
+    &.dark-mode{
+      color: rgb(232, 232, 232);
+    }
+  }
+  .homeBtn{
+    width: 10vw;
+    height: 5vh;
+    margin: 3vw;
+    background-color: rgb(223, 224, 187);
+    border: none;
+    color: rgb(0, 0, 0);
+    font-size: 1vw;
+    margin-left: 13vw;
+    margin-top: 25vh;
+    border-radius: 1vw;
+    transition: background-color 0.5s ease;
+    &:hover{
+      background-color: #fff235;
+    }
+    &.dark-mode{
+      background-color: rgb(55, 57, 43);
+      color: rgb(255, 255, 255);
+      &:hover{
+        background-color: rgb(147, 150, 74);
+      }
+    }
+  }
+  .homeImg{
+    width: 42vw;
+    border-radius: 1vw;
+    box-shadow: 1vw 1vw 1vw rgba(0, 0, 0, 0.1), 1vw 1vw 1vw rgba(0, 0, 0, 0.1);
+    float: right;
+    margin-right: 12vw;
+    position: relative;
+    bottom: 7vh;
+  }
 }

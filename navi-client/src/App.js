@@ -7,6 +7,7 @@ import FindPassword from "./components/Account/FindPassword";
 import Home from "./components/Service/Home";
 import Travel from "./components/Service/Travel";
 import Navi from "./components/Service/Navi";
+import Custom from "./components/Service/Custom";
 
 import "./App.css";
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/" element={<Home isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
         <Route path="/Travel" element={<Travel isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
         <Route path="/Navi" element={<Navi isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
+        <Route path="/Custom" element={<Custom isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
         <Route path="/Login" element={<Login isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
         <Route path="/SignUp" element={<SignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
         <Route path="/FindId" element={<FindId isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
