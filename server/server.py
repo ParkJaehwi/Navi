@@ -1,4 +1,3 @@
-# 
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 import openai
@@ -9,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # 세션을 위한 비밀 키 설정
-CORS(app, resources={r"/*": {"origins": "*"}})  # 모든 요청에 대해 CORS 허용
+CORS(app, supports_credentials=True)  # 모든 요청에 대해 CORS 허용 및 자격 증명 지원
 
 # 환경 변수 로드
 load_dotenv()
@@ -39,7 +38,7 @@ def signup():
     cursor.execute(query, values)
     db.commit()
     cursor.close()
-    return jsonify({"message": "회원가입이 완료되었습니다!"}), 201
+    return jsonify({"message": "회원가입이 완료되었습니다."}), 201
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -53,15 +52,57 @@ def login():
     if user and check_password_hash(user['password'], data['password']):
         session['user_id'] = user['user_id']
         session['username'] = user['username']
-        return jsonify({"message": "로그인 되었습니다!"}), 200
+        return jsonify({"message": "로그인 되었습니다."}), 200
     else:
-        return jsonify({"message": "로그인 실패"}), 401
+        return jsonify({"message": "회원정보가 없습니다."}), 401
 
 @app.route('/api/logout', methods=['POST'])
 def logout():
     session.pop('user_id', None)
     session.pop('username', None)
-    return jsonify({"message": "로그아웃 되었습니다!"}), 200
+    return jsonify({"message": "로그아웃 되었습니다."}), 200
+
+@app.route('/api/check_session', methods=['GET'])
+def check_session():
+    if 'user_id' in session:
+        return jsonify({"logged_in": True})
+    else:
+        return jsonify({"logged_in": False})
+
+@app.route('/api/find_password', methods=['POST'])
+def find_password():
+    data = request.json
+    username = data['username']
+    email = data['email']
+
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT password FROM user WHERE username = %s AND email = %s"
+    values = (username, email)
+    cursor.execute(query, values)
+    user = cursor.fetchone()
+    cursor.close()
+
+    if user:
+        return jsonify({"password": user['password']}), 200
+    else:
+        return jsonify({"message": "회원정보가 없습니다."}), 404
+
+@app.route('/api/find_username', methods=['POST'])
+def find_username():
+    data = request.json
+    email = data['email']
+
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT username FROM user WHERE email = %s"
+    values = (email,)
+    cursor.execute(query, values)
+    user = cursor.fetchone()
+    cursor.close()
+
+    if user:
+        return jsonify({"username": user['username']}), 200
+    else:
+        return jsonify({"message": "회원정보가 없습니다."}), 404
 
 @app.route('/ask', methods=['GET'])
 def ask_gpt():

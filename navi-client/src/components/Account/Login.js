@@ -1,50 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
-// import "../../style/Account/Login.scss";
-// import logo_dark from "../../style/img/login_logo_dark.png";
-// import logo_light from "../../style/img/login_logo_light.png";
-// import Header from "../Service/Header";
-
-// function Login({ isDarkMode, toggleDarkMode }) {
-//   const [isFocused1, setIsFocused1] = useState(false);
-//   const [isFocused2, setIsFocused2] = useState(false);
-
-//   return (
-//     <>
-//     <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
-//     <div className='Login'>
-//       <div className={`login_box ${isDarkMode ? 'dark-mode' : ''}`}>
-//         <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo'/></Link>
-//         <div className='login_main'>
-//           <p className={isFocused1 ? 'focused' : ''}>아이디</p>
-//           <input 
-//             type='text' 
-//             className={`login_input ${isDarkMode ? 'dark-mode' : ''}`}
-//             onFocus={() => setIsFocused1(true)} 
-//             onBlur={() => setIsFocused1(false)}
-//           />
-//           <p className={isFocused2 ? 'focused' : ''}>비밀번호</p>
-//           <input 
-//             type='password' 
-//             className={`login_input ${isDarkMode ? 'dark-mode' : ''}`}
-//             onFocus={() => setIsFocused2(true)} 
-//             onBlur={() => setIsFocused2(false)}
-//           />
-//           <button className={`loginBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그인</button>
-//         </div>
-//         <div className='login_menu'>
-//           <Link to="/FindPassword" className={`login_link ${isDarkMode ? 'dark-mode' : ''}`}>비밀번호찾기</Link>
-//           <Link to="/FindId" className={`login_link ${isDarkMode ? 'dark-mode' : ''}`}>아이디찾기</Link>
-//           <Link to="/SignUp" className={`login_link ${isDarkMode ? 'dark-mode' : ''}`}>회원가입</Link>
-//         </div>
-//       </div>
-//     </div>
-//     </>
-//   );
-// }
-
-// export default Login;
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -66,9 +19,10 @@ function Login({ isDarkMode, toggleDarkMode }) {
       const response = await axios.post('http://localhost:5000/api/login', {
         username,
         password
-      });
+      }, { withCredentials: true });  // withCredentials 추가
       setMessage(response.data.message);
       if (response.status === 200) {
+        window.alert('로그인 되었습니다!');
         navigate('/'); // 로그인 성공 시 홈으로 이동
       }
     } catch (error) {
