@@ -4,9 +4,8 @@ import "../../style/Account/SignUp.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
 import { GrCheckmark, GrClose } from "react-icons/gr";
-import Header from "../Service/Header";
 
-function SignUp({ isDarkMode, toggleDarkMode }) {
+function SignUp({ isDarkMode }) {
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [isFocused3, setIsFocused3] = useState(false);
@@ -26,7 +25,6 @@ function SignUp({ isDarkMode, toggleDarkMode }) {
 
   return (
     <>
-    <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
     <div className='SignUp'>
       <div className={`signup_box ${isDarkMode ? 'dark-mode' : ''}`}>
         <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='signup_logo'/></Link>

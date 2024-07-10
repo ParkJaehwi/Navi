@@ -24,8 +24,11 @@
 
 /* 이미지 스타일 */
 .slick-slide img {
-  max-width: 100%; /* 이미지를 슬라이드의 최대 너비에 맞게 조절 */
-  max-height: 100%; /* 이미지를 슬라이드의 최대 높이에 맞게 조절 */
+  max-width: 85%; /* 이미지를 슬라이드의 최대 너비에 맞게 조절 */
+  min-width: 85%;
+  max-height: 85%; /* 이미지를 슬라이드의 최대 높이에 맞게 조절 */
+  min-height: 85%;
+  margin-left: 9vw;
   object-fit: cover; /* 이미지가 슬라이드의 영역을 완전히 채우도록 */
 }
 .slick-arrow {

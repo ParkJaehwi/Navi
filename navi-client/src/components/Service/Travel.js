@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from "./Header";
 import Footer from './Footer';
 import "../../style/Service/Travel.scss";
 import Place1 from "../../style/img/nature.jpg";
@@ -28,10 +27,9 @@ const travelData = [
   { id: 10, name: '항공 레저', image: Place10, info: "항공 레저는 스카이다이빙, 패러글라이딩, 열기구 등 하늘에서의 다양한 액티비티를 체험할 수 있는 장소들로 구성되어 있습니다."},
 ];
 
-function Travel({ isDarkMode, toggleDarkMode }) {
+function Travel({ isDarkMode }) {
   return (
     <div>
-      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
       <p className={`travel_text ${isDarkMode ? 'dark-mode' : ''}`}>여행의 주제를 선택해보세요.</p>
       <div className='travel_container'>
         {travelData.map((place) => (

@@ -8,6 +8,7 @@ import Home from "./components/Service/Home";
 import Travel from "./components/Service/Travel";
 import Navi from "./components/Service/Navi";
 import Custom from "./components/Service/Custom";
+import Header from "./components/Service/Header";
 
 import "./App.css";
 function App() {
@@ -32,6 +33,7 @@ function App() {
 
   return (
     <Router>
+      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
       <Routes>
         <Route path="/" element={<Home isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
         <Route path="/Travel" element={<Travel isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />

@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom';
 import "../../style/Account/FindId.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
-import Header from "../Service/Header";
 
-function FindId({ isDarkMode, toggleDarkMode }) {
+
+function FindId({ isDarkMode }) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <>
-    <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
     <div className='FindId'>
       <div className={`findid_box ${isDarkMode ? 'dark-mode' : ''}`}>
         <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findid_logo'/></Link>

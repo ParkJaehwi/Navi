@@ -3,15 +3,13 @@ import { Link } from 'react-router-dom';
 import "../../style/Account/Login.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
-import Header from "../Service/Header";
 
-function Login({ isDarkMode, toggleDarkMode }) {
+function Login({ isDarkMode }) {
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
 
   return (
     <>
-    <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
     <div className='Login'>
       <div className={`login_box ${isDarkMode ? 'dark-mode' : ''}`}>
         <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo'/></Link>

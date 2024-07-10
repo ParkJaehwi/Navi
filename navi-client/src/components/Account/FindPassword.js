@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import "../../style/Account/FindPassword.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
-import Header from "../Service/Header";
 
-function FindPassword({ isDarkMode, toggleDarkMode }) {
+
+function FindPassword({ isDarkMode }) {
   const [isFocused, setIsFocused] = useState({
     id: false,
     email: false
@@ -14,7 +14,6 @@ function FindPassword({ isDarkMode, toggleDarkMode }) {
 
   return (
     <>
-    <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
     <div className='FindPassword'>
       <div className={`findpw_box ${isDarkMode ? 'dark-mode' : ''}`}>
         <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findpw_logo'/></Link>
