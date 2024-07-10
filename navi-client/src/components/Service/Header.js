@@ -16,7 +16,6 @@ function Header({ isDarkMode, toggleDarkMode }) {
           {isDarkMode ? <FaSun /> : <FaMoon/>}
         </button>
       </div>
-      
     </header>
   )
 }
