@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 import "../../style/Service/Travel.scss";
 import Place1 from "../../style/img/nature.jpg";
@@ -28,23 +28,33 @@ const travelData = [
 ];
 
 function Travel({ isDarkMode }) {
+  const navigate = useNavigate();
+
+  const handleClick = (place) => {
+    navigate("/Navi", { state: { mostFrequentOption: place.id, score: 1 } });
+  };
+  
   return (
     <div>
       <p className={`travel_text ${isDarkMode ? 'dark-mode' : ''}`}>여행의 주제를 선택해보세요.</p>
       <div className='travel_container'>
         {travelData.map((place) => (
-          <Link to="/Navi" key={place.id} className='travel_item'>
-            <div>
-              <img src={place.image} alt={place.name} className='travel_image'/>
-              <p className={`travel_name ${isDarkMode ? 'dark-mode' : ''}`}>{place.name}</p>
-              <p className={`travel_name2 ${isDarkMode ? 'dark-mode' : ''}`}>{place.info}</p>
-            </div>
-          </Link>
+          <div 
+            key={place.id} 
+            className='travel_item' 
+            onClick={() => handleClick(place)}
+            style={{ cursor: 'pointer' }} // 클릭 가능한 느낌을 줍니다.
+          >
+            <img src={place.image} alt={place.name} className='travel_image'/>
+            <p className={`travel_name ${isDarkMode ? 'dark-mode' : ''}`}>{place.name}</p>
+            <p className={`travel_name2 ${isDarkMode ? 'dark-mode' : ''}`}>{place.info}</p>
+          </div>
         ))}
       </div>
       <Footer isDarkMode={isDarkMode}/>
     </div>
   );
 }
+
 
 export default Travel;
