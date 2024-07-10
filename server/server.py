@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+# 
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 import openai
 import os
@@ -7,7 +8,8 @@ import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-CORS(app)  # 모든 요청에 대해 CORS 허용
+app.secret_key = os.urandom(24)  # 세션을 위한 비밀 키 설정
+CORS(app, resources={r"/*": {"origins": "*"}})  # 모든 요청에 대해 CORS 허용
 
 # 환경 변수 로드
 load_dotenv()
@@ -32,12 +34,12 @@ def signup():
     _email = data['email']
 
     cursor = db.cursor()
-    query = "INSERT INTO user (username, password, email) VALUES (%s, %s, %s)"  # create_time 제거
+    query = "INSERT INTO user (username, password, email) VALUES (%s, %s, %s)"
     values = (_username, _password, _email)
     cursor.execute(query, values)
     db.commit()
     cursor.close()
-    return jsonify({"message": "User created successfully"}), 201
+    return jsonify({"message": "회원가입이 완료되었습니다!"}), 201
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -49,9 +51,17 @@ def login():
     user = cursor.fetchone()
     cursor.close()
     if user and check_password_hash(user['password'], data['password']):
-        return jsonify(user), 200
+        session['user_id'] = user['user_id']
+        session['username'] = user['username']
+        return jsonify({"message": "로그인 되었습니다!"}), 200
     else:
-        return jsonify({"message": "Invalid credentials"}), 401
+        return jsonify({"message": "로그인 실패"}), 401
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    session.pop('user_id', None)
+    session.pop('username', None)
+    return jsonify({"message": "로그아웃 되었습니다!"}), 200
 
 @app.route('/ask', methods=['GET'])
 def ask_gpt():
