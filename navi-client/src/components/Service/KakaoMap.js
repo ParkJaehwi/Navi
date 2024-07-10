@@ -1,92 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import PlaceDetail from './PlaceDetail';
 
 const { kakao } = window;
 
 function KakaoMap() {
   const [map, setMap] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [jsonData, setJsonData] = useState([]);
   const [markers, setMarkers] = useState([]);
-  const [infowindows, setInfowindows] = useState([]);
+  const [places, setPlaces] = useState([]);
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
   useEffect(() => {
-    // Load JSON data from public folder
-    axios.get(`${process.env.PUBLIC_URL}/data.json`)
-      .then(response => {
-        setJsonData(response.data);
-      })
-      .catch(error => {
-        console.error("There was an error loading the JSON data!", error);
-      });
-
     const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3
+      center: new kakao.maps.LatLng(36.2683, 127.6358),
+      level: 13
     };
     const map = new kakao.maps.Map(container, options);
     setMap(map);
+
+    fetch('/data.json')
+      .then(response => response.json())
+      .then(data => setPlaces(data));
   }, []);
 
-  const handleSearch = () => {
-    // Clear existing markers and infowindows
+  const searchPlace = (keyword) => {
     markers.forEach(marker => marker.setMap(null));
-    infowindows.forEach(infowindow => infowindow.close());
     setMarkers([]);
-    setInfowindows([]);
+    setSelectedPlace(null);
 
-    const cityData = jsonData.find(item => item.city === searchQuery);
+    const filteredPlaces = places.filter(place => 
+      place.address.includes(keyword) || place.title.includes(keyword)
+    );
 
-    if (cityData) {
-      const landmarks = cityData.landmarks;
-
-      const newMarkers = [];
-      const newInfowindows = [];
-
-      landmarks.forEach(landmark => {
-        const coords = new kakao.maps.LatLng(landmark.lat, landmark.lng);
-
-        const marker = new kakao.maps.Marker({
-          map: map,
-          position: coords
-        });
-
-        const infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="width:150px;text-align:center;padding:6px 0;">${landmark.name}</div>`
-        });
-        infowindow.open(map, marker);
-
-        newMarkers.push(marker);
-        newInfowindows.push(infowindow);
+    const newMarkers = filteredPlaces.map(place => {
+      const marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(place.longitude, place.latitude),
+        map: map
       });
 
-      setMarkers(newMarkers);
-      setInfowindows(newInfowindows);
-    } else {
-      alert('해당 지역을 찾을 수 없습니다');
+      kakao.maps.event.addListener(marker, 'click', () => setSelectedPlace(place));
+
+      const infowindow = new kakao.maps.InfoWindow({
+        content: `<div style="padding:5px;">${place.title}</div>`
+      });
+
+      kakao.maps.event.addListener(marker, 'mouseover', () => infowindow.open(map, marker));
+      kakao.maps.event.addListener(marker, 'mouseout', () => infowindow.close());
+
+      return marker;
+    });
+
+    setMarkers(newMarkers);
+
+    if (filteredPlaces.length > 0) {
+      const bounds = new kakao.maps.LatLngBounds();
+      filteredPlaces.forEach(place => {
+        bounds.extend(new kakao.maps.LatLng(place.longitude, place.latitude));
+      });
+      map.setBounds(bounds);
     }
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="지역 이름 입력"
-        style={{ marginBottom: '10px', width: '200px' }}
-      />
-      <button onClick={handleSearch}>검색</button>
-      <div
-        id="map"
-        style={{
-          width: '50vw',
-          height: '100vh',
-        }}
-      ></div>
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
+        <div>
+          <input type="text" id="searchInput" placeholder="지역 검색" />
+          <button onClick={() => searchPlace(document.getElementById('searchInput').value)}>검색</button>
+        </div>
+        <div id="map" style={{
+          width: '100%',
+          height: '90vh',
+        }}></div>
+      </div>
+      <div style={{ flex: 1, overflowY: 'auto', maxHeight: '100vh' }}>
+        <PlaceDetail place={selectedPlace} />
+      </div>
     </div>
-  );
+  )
 }
 
 export default KakaoMap;

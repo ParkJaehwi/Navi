@@ -1,112 +1,181 @@
 [
   {
-    "city": "서울",
-    "landmarks": [
-      {
-        "name": "경복궁",
-        "lat": 37.579617,
-        "lng": 126.977041
-      },
-      {
-        "name": "N서울타워",
-        "lat": 37.551169,
-        "lng": 126.988227
-      },
-      {
-        "name": "북촌한옥마을",
-        "lat": 37.582604,
-        "lng": 126.983933
-      },
-      {
-        "name": "명동",
-        "lat": 37.560962,
-        "lng": 126.985302
-      },
-      {
-        "name": "인사동",
-        "lat": 37.570841,
-        "lng": 126.987110
-      },
-      {
-        "name": "청계천",
-        "lat": 37.570187,
-        "lng": 126.979635
-      },
-      {
-        "name": "광화문",
-        "lat": 37.575936,
-        "lng": 126.976944
-      },
-      {
-        "name": "동대문디자인플라자",
-        "lat": 37.566295,
-        "lng": 127.009442
-      },
-      {
-        "name": "한강공원",
-        "lat": 37.527805,
-        "lng": 126.932276
-      },
-      {
-        "name": "서울숲",
-        "lat": 37.544448,
-        "lng": 127.037696
-      }
-    ]
+    "title": "가나아트센터",
+    "areacode": 1,
+    "address": "서울특별시 종로구 평창30길 28",
+    "category": "A0206",
+    "latitude": 126.9751811,
+    "longitude": 37.61220999,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/19/1570619_image2_1.jpg"
   },
   {
-    "city": "부산",
-    "landmarks": [
-      {
-        "name": "해운대해수욕장",
-        "lat": 35.158698,
-        "lng": 129.160384
-      },
-      {
-        "name": "감천문화마을",
-        "lat": 35.097004,
-        "lng": 129.010579
-      },
-      {
-        "name": "자갈치시장",
-        "lat": 35.097406,
-        "lng": 129.036571
-      },
-      {
-        "name": "태종대",
-        "lat": 35.051755,
-        "lng": 129.084308
-      },
-      {
-        "name": "부산타워",
-        "lat": 35.101808,
-        "lng": 129.032616
-      },
-      {
-        "name": "광안리해수욕장",
-        "lat": 35.153267,
-        "lng": 129.118579
-      },
-      {
-        "name": "용두산공원",
-        "lat": 35.099952,
-        "lng": 129.032247
-      },
-      {
-        "name": "동백섬",
-        "lat": 35.153004,
-        "lng": 129.152054
-      },
-      {
-        "name": "국제시장",
-        "lat": 35.100547,
-        "lng": 129.027325
-      },
-      {
-        "name": "오륙도",
-        "lat": 35.095175,
-        "lng": 129.122543
-      }
-    ]
-  }
-]
+    "title": "가나아트파크",
+    "areacode": 31,
+    "address": "경기도 양주시 장흥면 권율로 117",
+    "category": "A0202",
+    "latitude": 126.9497497,
+    "longitude": 37.72545191,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/46/2010746_image2_1.jpg"
+  },
+  {
+    "title": "가남체육공원",
+    "areacode": 31,
+    "address": "경기도 여주시 가남읍 대명산길 98",
+    "category": "A0202",
+    "latitude": 127.5349142,
+    "longitude": 37.20170935,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/71/2777971_image2_1.jpg"
+  },
+  {
+    "title": "가덕도",
+    "areacode": 6,
+    "address": "부산광역시 강서구 천성동 308-2",
+    "category": "A0101",
+    "latitude": 128.8169442,
+    "longitude": 35.02296383,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/61/2716261_image2_1.jpg"
+  },
+  {
+    "title": "가덕도 등대",
+    "areacode": 6,
+    "address": "부산광역시 강서구 외양포로 10",
+    "category": "A0101",
+    "latitude": 128.8295937,
+    "longitude": 35.00064712,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/88/1982388_image2_1.jpg"
+  },
+  {
+    "title": "가덕도 연대봉",
+    "areacode": 6,
+    "address": "부산광역시 강서구 천성동",
+    "category": "A0101",
+    "latitude": 128.8216714,
+    "longitude": 35.03175182,
+    "image": ""
+  },
+  {
+    "title": "가덕도대항인공동굴",
+    "areacode": 6,
+    "address": "부산광역시 강서구 대항동 393-9",
+    "category": "A0101",
+    "latitude": 128.8274686,
+    "longitude": 35.01330955,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/67/2800367_image2_1.jpg"
+  },
+  {
+    "title": "가덕도외양포전망대",
+    "areacode": 6,
+    "address": "부산광역시 강서구 대항동",
+    "category": "A0205",
+    "latitude": 128.8310519,
+    "longitude": 35.00178313,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/22/3015322_image2_1.JPG"
+  },
+  {
+    "title": "가덕산",
+    "areacode": 31,
+    "address": "경기도 가평군 북면",
+    "category": "A0101",
+    "latitude": 127.5683098,
+    "longitude": 37.92023219,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/23/1900123_image2_1.jpg"
+  },
+  {
+    "title": "가라산",
+    "areacode": 36,
+    "address": "경상남도 거제시 남부면 다대리",
+    "category": "A0101",
+    "latitude": 128.6303347,
+    "longitude": 34.74105029,
+    "image": ""
+  },
+  {
+    "title": "가람관광농원",
+    "areacode": 36,
+    "address": "경상남도 합천군 봉산면 인덕로 930",
+    "category": "A0302",
+    "latitude": 128.0576567,
+    "longitude": 35.58745884,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/51/2741151_image2_1.jpg"
+  },
+  {
+    "title": "가람리조트",
+    "areacode": 32,
+    "address": "강원특별자치도 홍천군 두촌면 부채들길 29",
+    "category": "A0202",
+    "latitude": 128.0183741,
+    "longitude": 37.8364809,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/68/2762468_image2_1.JPG"
+  },
+  {
+    "title": "가람문학관",
+    "areacode": 37,
+    "address": "전북특별자치도 익산시 가람1길 76 가람문학관",
+    "category": "A0206",
+    "latitude": 127.084495,
+    "longitude": 36.03536023,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/62/2994662_image2_1.jpg"
+  },
+  {
+    "title": "가람화랑",
+    "areacode": 1,
+    "address": "서울특별자치시 종로구 인사동10길 11",
+    "category": "A0206",
+    "latitude": 126.9856035,
+    "longitude": 37.5742757,
+    "image": ""
+  },
+  {
+    "title": "가래골 농원캠핑장2",
+    "areacode": 31,
+    "address": "경기도 포천시 창수면 포천로2811번길 178",
+    "category": "A0302",
+    "latitude": 127.1549676,
+    "longitude": 37.99413264,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/78/2743978_image2_1.jpg"
+  },
+  {
+    "title": "가래골캠핑장",
+    "areacode": 31,
+    "address": "경기도 포천시 창수면 포천로2811번길 178",
+    "category": "A0302",
+    "latitude": 127.1576007,
+    "longitude": 37.99332722,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/22/2726922_image2_1.jpg"
+  },
+  {
+    "title": "가래실 문화마을",
+    "areacode": 35,
+    "address": "경상북도 영천시 화산면 가래실로 364",
+    "category": "A0201",
+    "latitude": 128.8892739,
+    "longitude": 36.03280701,
+    "image": ""
+  },
+  {
+    "title": "가령폭포",
+    "areacode": 32,
+    "address": "강원특별자치도 홍천군 내촌면 와야리",
+    "category": "A0101",
+    "latitude": 128.1601919,
+    "longitude": 37.83289511,
+    "image": ""
+  },
+  {
+    "title": "가로림글램핑",
+    "areacode": 34,
+    "address": "충청남도 서산시 팔봉면 범머리길 80",
+    "category": "A0302",
+    "latitude": 126.3294362,
+    "longitude": 36.834561,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/16/2793116_image2_1.jpg"
+  },
+  {
+    "title": "가루매마을",
+    "areacode": 31,
+    "address": "경기도 양평군 지평면 부일길 101",
+    "category": "A0203",
+    "latitude": 127.6140193,
+    "longitude": 37.45173466,
+    "image": "http://tong.visitkorea.or.kr/cms/resource/63/2480263_image2_1.jpg"
+  }]
