@@ -1,0 +1,52 @@
+.slick-prev:before, .slick-next:before {
+  display: none;
+}
+
+.slick-prev {
+  left: 1.5vw; /* 왼쪽 화살표 위치 조정 */
+  z-index: 1;
+}
+
+.slick-next {
+  right: 1.5vw; /* 오른쪽 화살표 위치 조정 */
+  z-index: 1;
+}
+
+.slick-slide {
+  display: flex;
+  align-items: center; /* 이미지가 세로로 중앙에 위치하도록 */
+  justify-content: center;
+  background-color: #FFFFFF; /* 이미지가 가로로 중앙에 위치하도록 */
+}
+.Slider-dev.dark-mode .slick-slide {
+  background-color: #1A1A1A; /* 다크 모드 배경색 */
+}
+
+/* 이미지 스타일 */
+.slick-slide img {
+  max-width: 85%; /* 이미지를 슬라이드의 최대 너비에 맞게 조절 */
+  min-width: 85%;
+  max-height: 85%; /* 이미지를 슬라이드의 최대 높이에 맞게 조절 */
+  min-height: 85%;
+  margin-left: 9vw;
+  object-fit: cover; /* 이미지가 슬라이드의 영역을 완전히 채우도록 */
+}
+.slick-arrow {
+  width: 2.0833vw;
+  height: 2.0833vh;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.6667vw;
+  line-height: 2.0833vh;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  top: 46%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.Slider-dev.dark-mode{
+  border-bottom: 0.1vw solid #32363C;
+  border-top: 0.1vw solid #32363C;
+}

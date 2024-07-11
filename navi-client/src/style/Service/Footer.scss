@@ -1,0 +1,51 @@
+.Footer{
+  background-color: #efefef;
+  color: rgb(141, 141, 141);
+  height: 38vh;
+  .footerLogo{
+    width: 6vw;
+    margin-left: 13vw;
+    margin-top: 7vh;
+  }
+  .footerInfo{
+    margin-left: 13.5vw;
+    font-size: 0.6vw;
+  }
+  .Copyright{
+    font-size: 0.7vw;
+    margin-left: 13.5vw;
+    margin-top: 7vh;
+  }
+  .footerLink{
+    display: flex;
+    justify-content: right;
+    position: relative;
+    bottom: 25vh;
+    margin-right: 15vw;
+    .footerBtn{
+      margin-left: 1vw;
+      border-radius: 2vw;
+      width: 3vw;
+      height: 3vw;
+      border: none;
+      background-color: rgb(247, 247, 247);
+      box-shadow: 0 0.3vw 0.3vw rgba(0, 0, 0, 0.1), 0 0.1vw 0.1vw rgba(0, 0, 0, 0.1);
+      font-size: 1.4vw;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .footerBtn.dark-mode{
+      background-color: #121212;
+      color: rgb(190, 190, 190);
+    }
+    .footerBtn:hover{
+      background-color: #cbcbcb;
+    }
+    .footerBtn.dark-mode:hover{
+      background-color: #353535;
+    }
+  }
+}
+.Footer.dark-mode{
+  background-color: #171717;
+}

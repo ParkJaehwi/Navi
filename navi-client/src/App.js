@@ -1,60 +1,54 @@
-// import React, { useEffect, useState, Button } from "react";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from "./components/Account/Login";
+import FindId from "./components/Account/FindId";
+import SignUp from "./components/Account/SignUp";
+import FindPassword from "./components/Account/FindPassword";
+import Home from "./components/Service/Home";
+import Travel from "./components/Service/Travel";
+import Navi from "./components/Service/Navi";
+import Custom from "./components/Service/Custom";
+import Header from "./components/Service/Header";
+import MyPage from "./components/Service/MyPage";
 
-// function App() {
-//   const button = () => {
-//     fetch("http://localhost:5000/ask")
-//       .then((response) => response.json())
-//       .then((data) => setData(data));
-//   };
-//   const [data, setData] = useState(null);
-
-//   // useEffect(() => {
-//   //   fetch("http://localhost:5000/api/data")
-//   //     .then((response) => response.json())
-//   //     .then((data) => setData(data));
-//   // }, []);
-
-//   return (
-//     <div className="App">
-//       <p>임시 텍스트</p>
-
-//       <button onClick={button}>버튼임</button>
-//       <p>임시 텍스트4</p>
-//       <header className="App-header">{data ? <p>{data}</p> : <p>Loading...</p>}</header>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-import React, { useState } from "react";
-
+import "./App.css";
 function App() {
-  const [data, setData] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem('dark-mode');
+    return savedMode === 'enabled';
+  });
 
-  const handleClick = () => {
-    fetch("http://localhost:5000/ask")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data.data); // 서버에서 전송한 데이터를 설정
-      })
-      .catch((error) => {
-        console.error("There has been a problem with your fetch operation:", error);
-      });
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('dark-mode', 'enabled');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('dark-mode', 'disabled');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
   };
 
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
   return (
-    <div className="App">
-      <p>임시 텍스트</p>
-      <button onClick={handleClick}>버튼임</button>
-      <p>임시 텍스트4</p>
-      <header className="App-header">{data ? <p>{data}</p> : <p>Loading...</p>}</header>
-    </div>
+    <Router>
+      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+      <Routes>
+        <Route path="/" element={<Home isDarkMode={isDarkMode}/>} />
+        <Route path="/Travel" element={<Travel isDarkMode={isDarkMode}/>} />
+        <Route path="/Navi" element={<Navi isDarkMode={isDarkMode}/>} />
+        <Route path="/Custom" element={<Custom isDarkMode={isDarkMode}/>} />
+        <Route path="/Login" element={<Login isDarkMode={isDarkMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
+        <Route path="/SignUp" element={<SignUp isDarkMode={isDarkMode}/>} />
+        <Route path="/FindId" element={<FindId isDarkMode={isDarkMode}/>} />
+        <Route path="/FindPassword" element={<FindPassword isDarkMode={isDarkMode}/>} />
+        <Route path="/MyPage" element={<MyPage isDarkMode={isDarkMode} setIsLoggedIn={setIsLoggedIn} />} />
+      </Routes>
+    </Router>
   );
 }
 

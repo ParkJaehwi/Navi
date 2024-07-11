@@ -1,38 +1,36 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+*{
+  font-family: 'Pretendard-Regular';
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fcfcfc;
+  height: 100%;
+}
+body.dark-mode{
+  background-color: #202020;
+}
+::-webkit-scrollbar{
+  display: none;
+}
+/* Edge 및 IE */
+input[type="password"]::-ms-reveal {
+  display: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Chrome, Safari, Edge (WebKit) */
+input[type="password"]::-webkit-text-security {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Firefox 및 모든 브라우저에 공통 적용 */
+input[type="password"] {
+  -webkit-text-security: disc;
 }
