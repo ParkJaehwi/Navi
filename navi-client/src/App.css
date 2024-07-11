@@ -19,3 +19,18 @@ body.dark-mode{
 ::-webkit-scrollbar{
   display: none;
 }
+/* Edge 및 IE */
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+
+/* Chrome, Safari, Edge (WebKit) */
+input[type="password"]::-webkit-text-security {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Firefox 및 모든 브라우저에 공통 적용 */
+input[type="password"] {
+  -webkit-text-security: disc;
+}

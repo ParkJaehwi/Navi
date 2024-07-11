@@ -46,7 +46,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp isDarkMode={isDarkMode}/>} />
         <Route path="/FindId" element={<FindId isDarkMode={isDarkMode}/>} />
         <Route path="/FindPassword" element={<FindPassword isDarkMode={isDarkMode}/>} />
-        <Route path="/MyPage" element={<MyPage isDarkMode={isDarkMode} />} />
+        <Route path="/MyPage" element={<MyPage isDarkMode={isDarkMode} setIsLoggedIn={setIsLoggedIn} />} />
       </Routes>
     </Router>
   );

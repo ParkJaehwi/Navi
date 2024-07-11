@@ -28,21 +28,6 @@ function Header({ isDarkMode, toggleDarkMode, isLoggedIn, setIsLoggedIn}) {
     checkSession();
   }, []);
 
-  useEffect(() => {
-    console.log('isLoggedIn:', isLoggedIn);
-  }, [isLoggedIn]);
-  
-  const handleLogout = async () => {
-    try {
-      await axios.post('http://localhost:5000/api/logout', {}, { withCredentials: true });
-      setIsLoggedIn(false);
-      alert('로그아웃 되었습니다.');
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
-
-
   return (
     <header className={`Header ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className='headerBar'>
@@ -51,7 +36,7 @@ function Header({ isDarkMode, toggleDarkMode, isLoggedIn, setIsLoggedIn}) {
         {isLoggedIn ? (
           <>
             <Link to="/MyPage" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>마이페이지</Link>
-            <Link to="/" onClick={handleLogout} className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그아웃</Link>
+            
           </>
         ) : (
           <Link to="/Login" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그인</Link>

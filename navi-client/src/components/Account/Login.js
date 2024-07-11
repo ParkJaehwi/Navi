@@ -21,7 +21,6 @@ function Login({ isDarkMode, setIsLoggedIn }) {
       }, { withCredentials: true });  // withCredentials 추가
       setMessage(response.data.message);
       if (response.status === 200) {
-        window.alert('로그인 되었습니다!');
         setIsLoggedIn(true);
         navigate('/'); // 로그인 성공 시 홈으로 이동
       }
@@ -51,7 +50,7 @@ function Login({ isDarkMode, setIsLoggedIn }) {
           />
           <p className={isFocused2 ? 'focused' : ''}>비밀번호</p>
           <input 
-            type='text' 
+            type='password' 
             className={`login_input ${isDarkMode ? 'dark-mode' : ''}`}
             onFocus={() => setIsFocused2(true)} 
             onBlur={() => setIsFocused2(false)}
