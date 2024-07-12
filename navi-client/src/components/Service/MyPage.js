@@ -5,7 +5,6 @@ import "../../style/Service/MyPage.scss";
 import { Link, useNavigate } from 'react-router-dom';
 
 function MyPage({ isDarkMode, setIsLoggedIn }) {
-
   const navigate = useNavigate();
   
   const handlePasswordReset = () => {
@@ -26,8 +25,8 @@ function MyPage({ isDarkMode, setIsLoggedIn }) {
       <div className="myPageContent">
         <h1>마이페이지</h1>
         <p>여기에서 사용자 정보를 확인하고 수정할 수 있습니다.</p>
-        <Link to="/" onClick={handleLogout} className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그아웃</Link>
-        <Link to="/reset_password" onClick={handlePasswordReset} className={`resetpwBtn ${isDarkMode ? 'dark-mode' : ''}`}>비밀번호 재설정</Link>
+        <Link to="/" onClick={handleLogout} className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그아웃</Link> / 
+        <Link to="/reset_password" onClick={handlePasswordReset} className={`resetpwBtn ${isDarkMode ? 'dark-mode' : ''}`}>비밀번호 재설정</Link> / 
       <Link to="/">홈으로 돌아가기</Link>
       </div>
       <Footer isDarkMode={isDarkMode} />

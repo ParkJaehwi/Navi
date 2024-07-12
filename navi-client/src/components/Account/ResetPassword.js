@@ -25,12 +25,27 @@ function ResetPassword({ isDarkMode }) {
 
       if (response.status === 200) {
         alert('비밀번호가 성공적으로 변경되었습니다.');
-        navigate('/login');
+        checkSessionAndRedirect(); // 비밀번호 변경 후 세션 확인 및 리다이렉트
+
       } else {
         setMessage('비밀번호 변경에 실패했습니다.');
       }
     } catch (error) {
       setMessage('비밀번호 변경에 실패했습니다.');
+    }
+  };
+
+  const checkSessionAndRedirect = async () => { // 세션 확인 및 리다이렉트 함수 추가
+    try {
+      const response = await axios.get('http://localhost:5000/api/check_session', { withCredentials: true });
+      if (response.data.logged_in) {
+        navigate('/'); // 세션이 있으면 홈으로 이동
+      } else {
+        navigate('/login'); // 세션이 없으면 로그인 페이지로 이동
+      }
+    } catch (error) {
+      console.error('Error checking session:', error);
+      navigate('/login'); // 에러 발생 시 로그인 페이지로 이동
     }
   };
 
