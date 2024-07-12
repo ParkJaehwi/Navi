@@ -49,7 +49,7 @@ const questions = [
             { id: 1, text: "심리적, 신체적 안정 및 건강에 대한 내적 이해", scores: { a: 1, c: 1 } },
             { id: 2, text: "특정 장소나 문화에 대한 외적인 지식 습득", scores: { b: 1, f: 1, d: 1 } },
             { id: 3, text: "예술 작품에 대한 깊이 있는 분석과 감상의 지식", scores: { e: 1, g: 1 } },
-            { id: 3, text: "적극적인 활동을 통한 도전정신", scores: { h: 1, i: 1, j: 1 } },
+            { id: 4, text: "적극적인 활동을 통한 도전정신", scores: { h: 1, i: 1, j: 1 } },
         ] 
     },
   ];
@@ -91,13 +91,13 @@ const Custom = ({ isDarkMode }) => {
     };
 
     return (
-        <div className='Custom'>
+        <div className={`Custom ${isDarkMode ? 'dark-mode' : ''}`}>
             {currentQuestionIndex < questions.length ? (
                 <div>
-                    <h2 className='question'>{questions[currentQuestionIndex].question}</h2>
-                    <div>
+                    <h2 className={`question ${isDarkMode ? 'dark-mode' : ''}`}>{questions[currentQuestionIndex].question}</h2>
+                    <div className={`radio_container ${isDarkMode ? 'dark-mode' : ''}`}>
                         {questions[currentQuestionIndex].options.map((option) => (
-                            <div key={option.id} className='select'>
+                            <div key={option.id} className={`select ${isDarkMode ? 'dark-mode' : ''}`}>
                                 <input
                                     type="radio"
                                     id={`question-${questions[currentQuestionIndex].id}-option-${option.id}`}
@@ -105,18 +105,18 @@ const Custom = ({ isDarkMode }) => {
                                     value={option.id}
                                     onChange={() => handleAnswerSelection(option)}
                                     checked={answers[currentQuestionIndex] === option.id}
-                                    className="radio-button" // 추가된 클래스
+                                    className={`radio-button ${isDarkMode ? 'dark-mode' : ''}`}// 추가된 클래스
                                 />
                                 <label for="select"
                                     htmlFor={`question-${questions[currentQuestionIndex].id}-option-${option.id}`}
-                                    className="radio-label" // 추가된 클래스
+                                    className={`radio-label ${isDarkMode ? 'dark-mode' : ''}`} // 추가된 클래스
                                 >
                                     {option.text}
                                 </label>
                             </div>
                         ))}
                     </div>
-                    <button onClick={handleNextQuestion}>
+                    <button onClick={handleNextQuestion} className={`customBtn ${isDarkMode ? 'dark-mode' : ''}`}>
                         {currentQuestionIndex === questions.length - 1 ? '결과 보기' : '다음'}
                     </button>
                 </div>

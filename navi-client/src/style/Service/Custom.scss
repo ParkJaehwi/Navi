@@ -1,29 +1,53 @@
 .Custom {
-  
-}
-
-.select {
-  padding: 15px 10px;
-}
-.select input[type=radio]{
-  display: none;
-}
-.select input[type=radio]+label{
-  display: inline-block;
-  cursor: pointer;
-  height: 100px;
-  width: 100px;
-  border: 1px solid #333;
-  line-height: 24px;
-  text-align: center;
-  font-weight:bold;
-  font-size:13px;
-}
-.select input[type=radio]+label{
-  background-color: #fff;
-  color: #333;
-}
-.select input[type=radio]:checked+label{
-  background-color: #333;
-  color: #fff;
+  .question {
+    font-size: 2vw;
+    text-align: center;
+    padding-top: 10vh;
+    color: #202020;
+    &.dark-mode{
+      color: #fcfcfc;
+    }
+  }
+  .radio_container {
+    display: flex;
+    justify-content: center; /* 라디오 버튼들을 가로로 배치하기 위해 사용 */
+    .select {
+      display: flex; /* 라디오 버튼과 레이블을 가로 방향으로 배치 */
+      align-items: center;/* 수직 정렬 */
+      margin: 0 2vw;
+      margin-top: 10vh; /* 각 선택지 사이의 간격 */
+      input[type=radio] {
+        display: none; /* 라디오 버튼을 숨깁니다. */
+      }
+      input[type=radio]+label{
+        cursor: pointer;
+        height: 20vh;
+        width: 20vw;
+        border: 0.1vw solid #a1a1a1;
+        border-radius: 1vw;
+        text-align: center;
+        font-weight:bold;
+        font-size: 1vw;
+        padding-top: 15vh;
+        color: #333;
+      }
+      input[type=radio]:checked+label{
+        border: 0.3vw solid yellow;
+        color: #333;
+      }
+      .radio-button {
+        margin-right: 5px; /* 라디오 버튼과 레이블 사이의 간격 */
+      }
+      .radio-label {
+        margin: 0; /* 레이블의 기본 마진을 제거 */
+      }
+    }
+  }
+  .customBtn{
+    width: 10vw;
+    height: 5vh;
+    margin-left: 44.5vw;
+    margin-top: 10vh;
+    font-size: 0.9vw;
+  }
 }

@@ -34,3 +34,9 @@ input[type="password"]::-webkit-text-security {
 input[type="password"] {
   -webkit-text-security: disc;
 }
+body {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
+}
