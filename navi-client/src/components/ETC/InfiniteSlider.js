@@ -40,11 +40,11 @@ const InfiniteSlider = ({ isDarkMode }) => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 1000,
+    speed: 1500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 2000,
+    autoplay: true,
+    autoplaySpeed: 7000,
     nextArrow: <CustomArrow className="slick-next" isDarkMode={isDarkMode}/>,
     prevArrow: <CustomArrow className="slick-prev" isDarkMode={isDarkMode}/>,
   };
