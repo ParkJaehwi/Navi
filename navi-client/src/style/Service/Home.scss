@@ -20,15 +20,6 @@
     font-size: 0.7vw;
     margin-left: 1vw;
   }
-  .homeLink{
-    padding: 1.3vh 3vw;
-    font-size: 0.9vw;
-    color: rgb(25, 25, 25);
-    text-decoration: none;
-    &.dark-mode{
-      color: rgb(232, 232, 232);
-    }
-  }
   .homeBtn{
     width: 10vw;
     height: 5vh;
@@ -40,9 +31,12 @@
     margin-left: 13vw;
     margin-top: 25vh;
     border-radius: 1vw;
+    font-size: 0.9vw;
+    cursor: pointer;
     transition: background-color 0.5s ease;
     &:hover{
       background-color: #fff235;
+      color: rgb(25, 25, 25);
     }
     &.dark-mode{
       background-color: rgb(55, 57, 43);

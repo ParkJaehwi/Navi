@@ -2,9 +2,9 @@ import React from 'react';
 import Footer from './Footer';
 import axios from 'axios';
 import "../../style/Service/MyPage.scss";
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function MyPage({ isDarkMode, setIsLoggedIn, handleResetPassword  }) {
+function MyPage({ isDarkMode, setIsLoggedIn }) {
 
   const navigate = useNavigate();
   
