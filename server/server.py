@@ -1,137 +1,10 @@
-# from flask import Flask, request, jsonify
-# from flask_cors import CORS
-# import openai
-# import os
-# from dotenv import load_dotenv
-# import requests
-
-# # .env 파일 로드
-# load_dotenv()
-
-# # OpenAI API 키 설정
-# openai.api_key = os.getenv('OPENAI_API_KEY')
-
-# app = Flask(__name__)
-# CORS(app)
-
-# @app.route('/api/data', methods=['GET'])
-# def get_data():
-#     # GPT-3.5 모델에 대한 요청 생성
-#     response = openai.Completion.create(
-#       model="gpt-3.5-turbo",  # 사용할 모델 지정
-#       messages=[
-#         {"role": "system", "content": "You are a helpful assistant."},
-#         {"role": "user", "content": "Hello, world!"}
-#       ],
-#       max_tokens=50  # 생성할 텍스트의 최대 길이
-#     )
-
-#     # GPT 응답에서 텍스트 추출
-#     gpt_response = response.choices[0].message['content'].strip()
-
-#     data = {"message": gpt_response}
-#     return jsonify(data)
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-# app.py
-
-# from flask import Flask, request, jsonify
-# from flask_cors import CORS
-# import openai
-# import os
-# from dotenv import load_dotenv
-# import requests
-
-# app = Flask(__name__)
-# CORS(app)  # CORS 설정
-
-# load_dotenv()  # .env 파일에서 환경 변수 로드
-
-# # OpenAI API 키 설정
-# OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-
-# # GPT-3.5 API 호출 함수
-# def get_gpt3_response(prompt):
-#     headers = {
-#         'Authorization': f'Bearer {OPENAI_API_KEY}',
-#         'Content-Type': 'application/json',
-#     }
-#     data = {
-#         'model': 'gpt-3.5-turbo',
-#         'messages': [{'role': 'user', 'content': prompt}],
-#     }
-#     response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers, json=data)
-#     return response.json()
-
-# # 기본 라우트 설정
-# @app.route('/')
-# def home():
-#     return "Hello, this is a GPT-3.5 API integration with Flask!"
-
-# # GPT-3.5 API를 호출하는 엔드포인트 설정
-# @app.route('/ask', methods=['POST'])
-# def ask_gpt3():
-#     data = request.get_json()
-#     prompt = data.get('prompt', '')
-#     if prompt:
-#         gpt3_response = get_gpt3_response(prompt)
-#         return jsonify(gpt3_response)
-#     return jsonify({'error': 'No prompt provided'}), 400
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
-# from flask import Flask, request, jsonify
-# from flask_cors import CORS
-# import openai
-# import os
-# from dotenv import load_dotenv
-# import requests
-
-# app = Flask(__name__)
-# CORS(app)
-
-# load_dotenv()
-# GPT_API_KEY=os.getenv('GPT_API_KEY')
-
-# client = openai.OpenAI(api_key = GPT_API_KEY)
-
-# completion = client.chat.completions.create(
-#   model="gpt-3.5-turbo",
-#   messages=[
-#     {"role": "system", "content": "지금 응답 테스트 중이야. content내용 '응답완료'로 대답해"},
-#     {"role": "user", "content": "응답완료"}
-#   ]
-# )
-
-# print(completion.choices[0].message.content)
-
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-    
-    
-# @app.route('/ask', methods=['GET'])
-# def get_data():
-#   completion = client.chat.completions.create(
-#     model="gpt-3.5-turbo",
-#     messages=[
-#       {"role": "system", "content": "지금 응답 테스트 중이야. content내용 '응답완료'로 대답해"},
-#       {"role": "user", "content": "응답완료"}
-#     ]
-#   )
-#   data = completion.choices[0].message.content
-#   return jsonify({'data': data})
-  
-
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 import openai
 import os
 from dotenv import load_dotenv
+import mysql.connector
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 CORS(app)
@@ -154,10 +27,123 @@ def gpt_api():
     data = response.choices[0].message['content']
     print(data)
     return jsonify({'data': data})
+app.secret_key = os.urandom(24)  # 세션을 위한 비밀 키 설정
+CORS(app, supports_credentials=True)  # 모든 요청에 대해 CORS 허용 및 자격 증명 지원
+
+# 환경 변수 로드
+load_dotenv()
+GPT_API_KEY = os.getenv('GPT_API_KEY')
+
+# OpenAI API 클라이언트 초기화
+client = openai.OpenAI(api_key=GPT_API_KEY)
+
+# 환경 변수에서 데이터베이스 설정 가져오기
+DB_HOST = os.getenv('DB_HOST')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_DATABASE = os.getenv('DB_DATABASE')
+
+# MySQL DB 연결 설정
+db = mysql.connector.connect(
+    host=DB_HOST,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_DATABASE
+)
+
+@app.route('/api/signup', methods=['POST'])
+def signup():
+    data = request.json
+    _username = data['username']
+    _password = generate_password_hash(data['password'])
+    _email = data['email']
+
+    cursor = db.cursor()
+    query = "INSERT INTO user (username, password, email) VALUES (%s, %s, %s)"
+    values = (_username, _password, _email)
+    cursor.execute(query, values)
+    db.commit()
+    cursor.close()
+    return jsonify({"message": "회원가입이 완료되었습니다."}), 201
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT * FROM user WHERE username = %s"
+    values = (data['username'],)
+    cursor.execute(query, values)
+    user = cursor.fetchone()
+    cursor.close()
+    if user and check_password_hash(user['password'], data['password']):
+        session['user_id'] = user['user_id']
+        session['username'] = user['username']
+        return jsonify({"message": "로그인 되었습니다."}), 200
+    
+    else:
+        return jsonify({"message": "회원정보가 없습니다."}), 401
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    session.pop('user_id', None)
+    session.pop('username', None)
+    return jsonify({"message": "로그아웃 되었습니다."}), 200
+
+@app.route('/api/check_session', methods=['GET'])
+def check_session():
+    if 'user_id' in session:
+        return jsonify({"logged_in": True})
+    else:
+        return jsonify({"logged_in": False})
+
+@app.route('/api/find_password', methods=['POST'])
+def find_password():
+    data = request.json
+    username = data['username']
+    email = data['email']
+
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT password FROM user WHERE username = %s AND email = %s"
+    values = (username, email)
+    cursor.execute(query, values)
+    user = cursor.fetchone()
+    cursor.close()
+
+    if user:
+        return jsonify({"password": user['password']}), 200
+    else:
+        return jsonify({"message": "회원정보가 없습니다."}), 404
+
+@app.route('/api/find_username', methods=['POST'])
+def find_username():
+    data = request.json
+    email = data['email']
+
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT username FROM user WHERE email = %s"
+    values = (email,)
+    cursor.execute(query, values)
+    user = cursor.fetchone()
+    cursor.close()
+
+    if user:
+        return jsonify({"username": user['username']}), 200
+    else:
+        return jsonify({"message": "회원정보가 없습니다."}), 404
 
 @app.route('/ask', methods=['GET'])
 def ask_gpt():
-    return gpt_api()
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "너는 여행 동선을 짜주는 ai비서야"},
+            {"role": "user", "content": "아쿠아플라넷 제주: 제주 서귀포시 성산읍 섭지코지로 95 아쿠아플라넷 제주 산방산 탄산온천: 제주 서귀포시 안덕면 사계북로41번길 192 제주항공우주박물관: "
+            + "제주 서귀포시 안덕면 녹차분재로 218 제주항공우주박물관 대포주상절리: 제주 서귀포시 이어도로 36-24 더본 호텔 제주 :제주 서귀포시 색달로 18"+"내가 준 데이터 중에서 3개만 뽑아서 제주도 1박 2일 일정 짜주고 리턴 데이터는 json으로"}
+        ],
+    )
+    data = completion.choices[0].message.content
+    print(completion.choices[0].message.content)
+    return jsonify({'data': data})
 
 if __name__ == '__main__':
     app.run(debug=True)

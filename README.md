@@ -12,6 +12,7 @@ pip install Flask
 pip install flask-cors
 pip install openai
 pip install python-dotenv
+pip install mysql-connector-python
 
 // 서버 실행
 
@@ -27,24 +28,3 @@ npm i
 npm start
 
 ---
-
-git push 과정
-
-각자 branch에서 push
-merge는 한명이 진행
-
-클라이언트 수정 시
-클라이언트에서
-
-git add .
-git commit -m ""
-git push
-
-진행 후
-navi에서
-
-git add .
-git commit -m ""
-git push
-
-진행

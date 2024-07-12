@@ -1,15 +1,19 @@
 .Header{
   background-color: white;
-  box-shadow: inset 0 0.1vw 0.1vw rgba(0, 0, 0, 0.1), 0 0.1vw 0.1vw rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0.1vw rgba(0, 0, 0, 0.1), 0 0 0.1vw rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   .headerBar{
     height: 8vh;
     .headerLogo{
-      width: 8vw;
-      height: 5.1vh;
+      width: 7vw;
+      height: 4.1vh;
       margin: 0.7vw;
       margin-right: 55vw;
+      margin-bottom: 2vh;
+      position: relative;
+      top: 0.4vh;
+      cursor: pointer;
     }
     .headerBtn{
       font-size: 0.9vw;
@@ -52,7 +56,7 @@
   }
 }
 .Header.dark-mode{
-  background-color: #171717;
+  background-color: #191919;
   box-shadow: 0 0.1vw 0.1vw rgba(0, 0, 0, 0.1), 0 0.1vw 0.1vw rgba(0, 0, 0, 0.1);
-  border-bottom: 0.1vw solid #32363C;
+  border-bottom: 0.1vw solid #3c4046;
 }
