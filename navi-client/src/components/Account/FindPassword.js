@@ -1,6 +1,6 @@
 // FindPassword.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "../../style/Account/FindPassword.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
@@ -15,6 +15,7 @@ function FindPassword({ isDarkMode }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleFindPassword = async () => {
     try {
@@ -23,7 +24,7 @@ function FindPassword({ isDarkMode }) {
         email
       }, { withCredentials: true }); // withCredentials 추가
       if (response.status === 200) {
-        alert(`비밀번호는: ${response.data.password}`);
+        navigate(`/reset_password/${username}/${email}`);
       } else {
         setMessage('회원정보가 없습니다.');
       }

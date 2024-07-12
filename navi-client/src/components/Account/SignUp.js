@@ -41,6 +41,7 @@ function SignUp({ isDarkMode }) {
       });
       setMessage(response.data.message);
       if (response.status === 201) {
+        window.alert('회원가입이 완료되었습니다!');  //sweetalert
         navigate('/login'); // 회원가입 성공 시 로그인 페이지로 이동
       }
     } catch (error) {
