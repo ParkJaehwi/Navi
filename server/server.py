@@ -90,7 +90,7 @@ def find_password():
     cursor.close()
 
     if user:
-        return jsonify({"password": user['password']}), 200
+        return jsonify({"message": "유효한 사용자입니다."}), 200
     else:
         return jsonify({"message": "회원정보가 없습니다."}), 404
 
@@ -110,6 +110,28 @@ def find_username():
         return jsonify({"username": user['username']}), 200
     else:
         return jsonify({"message": "회원정보가 없습니다."}), 404
+
+@app.route('/api/reset_password', methods=['POST'])
+def reset_password():
+    data = request.json
+    new_password = generate_password_hash(data['newPassword'])
+    cursor = db.cursor()
+
+    if 'user_id' in session:
+        user_id = session['user_id']
+        query = "UPDATE user SET password = %s WHERE user_id = %s"
+        values = (new_password, user_id)
+    else:
+        username = data['username']
+        email = data['email']
+        query = "UPDATE user SET password = %s WHERE username = %s AND email = %s"
+        values = (new_password, username, email)
+
+    cursor.execute(query, values)
+    db.commit()
+    cursor.close()
+
+    return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
 @app.route('/ask', methods=['GET'])
 def ask_gpt():
