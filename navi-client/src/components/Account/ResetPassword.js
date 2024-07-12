@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-// import "../../style/Account/ResetPassword.scss";
+import "../../style/Account/ResetPassword.scss";
+import logo_dark from "../../style/img/login_logo_dark.png";
+import logo_light from "../../style/img/login_logo_light.png";
 
 function ResetPassword({ isDarkMode }) {
   const { username, email } = useParams();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [isFocused1, setIsFocused1] = useState(false);
+  const [isFocused2, setIsFocused2] = useState(false);
   const navigate = useNavigate();
 
   const handleResetPassword = async () => {
@@ -37,25 +41,31 @@ function ResetPassword({ isDarkMode }) {
   return (
     <div className='ResetPassword'>
       <div className={`resetpw_box ${isDarkMode ? 'dark-mode' : ''}`}>
-        <h2>비밀번호 재설정</h2>
-        <input
-          type='password'
-          placeholder='새 비밀번호'
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className={`resetpw_input ${isDarkMode ? 'dark-mode' : ''}`}
-        />
-        <input
-          type='password'
-          placeholder='비밀번호 확인'
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className={`resetpw_input ${isDarkMode ? 'dark-mode' : ''}`}
-        />
-        <button onClick={handleResetPassword} className={`resetpwBtn ${isDarkMode ? 'dark-mode' : ''}`}>
-          비밀번호 재설정
-        </button>
-        {message && <p>{message}</p>}
+      <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo'/></Link>
+        <div className='resetpw_main'>
+          <p className={isFocused1 ? 'focused' : ''}>새 비밀번호</p>
+          <input
+            type='password'
+            onFocus={() => setIsFocused1(true)} 
+            onBlur={() => setIsFocused1(false)}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className={`resetpw_input ${isDarkMode ? 'dark-mode' : ''}`}
+          />
+          <p className={isFocused2 ? 'focused' : ''}>비밀번호 확인</p>
+          <input
+            type='password'
+            onFocus={() => setIsFocused2(true)} 
+            onBlur={() => setIsFocused2(false)}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className={`resetpw_input ${isDarkMode ? 'dark-mode' : ''}`}
+          />
+          <button onClick={handleResetPassword} className={`resetpwBtn ${isDarkMode ? 'dark-mode' : ''}`}>
+            비밀번호 재설정
+          </button>
+          {message && <p>{message}</p>}
+        </div>
       </div>
     </div>
   );

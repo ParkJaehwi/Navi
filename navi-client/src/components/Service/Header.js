@@ -28,22 +28,32 @@ function Header({ isDarkMode, toggleDarkMode, isLoggedIn, setIsLoggedIn}) {
     checkSession();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:5000/api/logout', {}, { withCredentials: true });
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <header className={`Header ${isDarkMode ? 'dark-mode' : ''}`}>
       <div className='headerBar'>
-        <img src={isDarkMode ? navi_dark : navi_light} className='headerLogo' onClick={handleClick}/>
-        <Link to="/Travel" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>여행지</Link>
-        {isLoggedIn ? (
-          <>
-            <Link to="/MyPage" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>마이페이지</Link>
-            
-          </>
-        ) : (
-          <Link to="/Login" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그인</Link>
-        )}
-        
+        <img src={isDarkMode ? navi_dark : navi_light} className='headerLogo' onClick={handleClick} />
+        <div className='linkContainer'>
+          <Link to="/Travel" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>여행지</Link>
+          {isLoggedIn ? (
+            <>
+              <Link to="/MyPage" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>마이페이지</Link>
+              <Link to="/" onClick={handleLogout} className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그아웃</Link>
+            </>
+          ) : (
+            <Link to="/Login" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그인</Link>
+          )}
+        </div>
         <button onClick={toggleDarkMode} className={`darkBtn ${isDarkMode ? 'dark-mode' : ''}`}>
-          {isDarkMode ? <FaSun /> : <FaMoon/>}
+          {isDarkMode ? <FaSun /> : <FaMoon />}
         </button>
       </div>
     </header>
