@@ -7,7 +7,8 @@ import FindPassword from "./components/Account/FindPassword";
 import Home from "./components/Service/Home";
 import Travel from "./components/Service/Travel";
 import Navi from "./components/Service/Navi";
-import MyPage from "./components/Service/MyPage"; // MyPage 컴포넌트 추가
+import MyPage from "./components/Service/MyPage";
+import ResetPassword from "./components/Account/ResetPassword";
 
 import "./App.css";
 
@@ -41,7 +42,9 @@ function App() {
         <Route path="/SignUp" element={<SignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
         <Route path="/FindId" element={<FindId isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
         <Route path="/FindPassword" element={<FindPassword isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
-        <Route path="/MyPage" element={<MyPage isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} /> {/* MyPage 경로 추가 */}
+        <Route path="/MyPage" element={<MyPage isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
+        <Route path="/reset_password/:username/:email" element={<ResetPassword isDarkMode={isDarkMode}/>} />
+        <Route path="/reset_password" element={<ResetPassword isDarkMode={isDarkMode}/>} />
       </Routes>
     </Router>
   );

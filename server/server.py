@@ -17,12 +17,18 @@ GPT_API_KEY = os.getenv('GPT_API_KEY')
 # OpenAI API 클라이언트 초기화
 client = openai.OpenAI(api_key=GPT_API_KEY)
 
+# 환경 변수에서 데이터베이스 설정 가져오기
+DB_HOST = os.getenv('DB_HOST')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_DATABASE = os.getenv('DB_DATABASE')
+
 # MySQL DB 연결 설정
 db = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='0126',
-    database='join'
+    host=DB_HOST,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_DATABASE
 )
 
 @app.route('/api/signup', methods=['POST'])
@@ -53,6 +59,7 @@ def login():
         session['user_id'] = user['user_id']
         session['username'] = user['username']
         return jsonify({"message": "로그인 되었습니다."}), 200
+    
     else:
         return jsonify({"message": "회원정보가 없습니다."}), 401
 
@@ -83,7 +90,7 @@ def find_password():
     cursor.close()
 
     if user:
-        return jsonify({"password": user['password']}), 200
+        return jsonify({"message": "유효한 사용자입니다."}), 200
     else:
         return jsonify({"message": "회원정보가 없습니다."}), 404
 
@@ -103,6 +110,28 @@ def find_username():
         return jsonify({"username": user['username']}), 200
     else:
         return jsonify({"message": "회원정보가 없습니다."}), 404
+
+@app.route('/api/reset_password', methods=['POST'])
+def reset_password():
+    data = request.json
+    new_password = generate_password_hash(data['newPassword'])
+    cursor = db.cursor()
+
+    if 'user_id' in session:
+        user_id = session['user_id']
+        query = "UPDATE user SET password = %s WHERE user_id = %s"
+        values = (new_password, user_id)
+    else:
+        username = data['username']
+        email = data['email']
+        query = "UPDATE user SET password = %s WHERE username = %s AND email = %s"
+        values = (new_password, username, email)
+
+    cursor.execute(query, values)
+    db.commit()
+    cursor.close()
+
+    return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
 @app.route('/ask', methods=['GET'])
 def ask_gpt():

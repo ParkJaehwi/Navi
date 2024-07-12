@@ -42,7 +42,6 @@ function Header({ isDarkMode, toggleDarkMode }) {
         {isLoggedIn ? (
           <>
             <Link to="/MyPage" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>마이페이지</Link>
-            <Link to="/" onClick={handleLogout} className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그아웃</Link>
           </>
         ) : (
           <Link to="/Login" className={`headerBtn ${isDarkMode ? 'dark-mode' : ''}`}>로그인</Link>

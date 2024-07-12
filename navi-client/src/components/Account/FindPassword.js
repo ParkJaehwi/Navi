@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import "../../style/Account/FindPassword.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
-import Header from "../Service/Header";
+import axios from 'axios';
 
-function FindPassword({ isDarkMode, toggleDarkMode }) {
+function FindPassword({ isDarkMode }) {
   const [isFocused, setIsFocused] = useState({
     id: false,
     email: false
@@ -14,6 +13,7 @@ function FindPassword({ isDarkMode, toggleDarkMode }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleFindPassword = async () => {
     try {
@@ -22,7 +22,7 @@ function FindPassword({ isDarkMode, toggleDarkMode }) {
         email
       }, { withCredentials: true }); // withCredentials 추가
       if (response.status === 200) {
-        alert(`비밀번호는: ${response.data.password}`);
+        navigate(`/reset_password/${username}/${email}`);
       } else {
         setMessage('회원정보가 없습니다.');
       }
@@ -33,26 +33,25 @@ function FindPassword({ isDarkMode, toggleDarkMode }) {
 
   return (
     <>
-      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       <div className='FindPassword'>
         <div className={`findpw_box ${isDarkMode ? 'dark-mode' : ''}`}>
-          <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findpw_logo' /></Link>
+          <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findpw_logo'/></Link>
           <div className='findpw_main'>
             <p className={isFocused.id ? 'focused' : ''}>아이디</p>
-            <input
-              type='text'
+            <input 
+              type='text' 
               className={`findpw_input ${isDarkMode ? 'dark-mode' : ''}`}
-              onFocus={() => setIsFocused({ ...isFocused, id: true })}
-              onBlur={() => setIsFocused({ ...isFocused, id: false })}
+              onFocus={() => setIsFocused({...isFocused, id: true})} 
+              onBlur={() => setIsFocused({...isFocused, id: false})}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <p className={isFocused.email ? 'focused' : ''}>이메일</p>
-            <input
-              type='email'
+            <input 
+              type='email' 
               className={`findpw_input ${isDarkMode ? 'dark-mode' : ''}`}
-              onFocus={() => setIsFocused({ ...isFocused, email: true })}
-              onBlur={() => setIsFocused({ ...isFocused, email: false })}
+              onFocus={() => setIsFocused({...isFocused, email: true})} 
+              onBlur={() => setIsFocused({...isFocused, email: false})}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -69,4 +68,3 @@ function FindPassword({ isDarkMode, toggleDarkMode }) {
 }
 
 export default FindPassword;
-
