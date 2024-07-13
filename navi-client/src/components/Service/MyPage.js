@@ -17,7 +17,6 @@ function MyPage({ isDarkMode, setIsLoggedIn }) {
         <h1>마이페이지</h1>
         <p>여기에서 사용자 정보를 확인하고 수정할 수 있습니다.</p>
         <Link to="/reset_password" onClick={handlePasswordReset} className={`resetpwBtn ${isDarkMode ? 'dark-mode' : ''}`}>비밀번호 재설정</Link>
-      <Link to="/">홈으로 돌아가기</Link>
       </div>
       <Footer isDarkMode={isDarkMode} />
     </div>
