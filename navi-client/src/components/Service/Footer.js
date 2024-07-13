@@ -8,7 +8,7 @@ function Footer({isDarkMode}) {
   
   return (
     <div className={`Footer ${isDarkMode ? 'dark-mode' : ''}`}>
-      <img src={isDarkMode ? navi_dark : navi_light} className='footerLogo'/>
+      <img src={isDarkMode ? navi_dark : navi_light} className='footerLogo' alt="logo"/>
       <div className="footerInfo">
         <p>주식회사 NAVI | 대표 박재휘</p>
         <p>사업자 등록번호 987-65-43210</p>

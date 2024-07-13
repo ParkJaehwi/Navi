@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate  } from 'react-router-dom';
 import "../../style/Service/Header.scss";
 import navi_dark from "../../style/img/Navi_dark_logo.png";

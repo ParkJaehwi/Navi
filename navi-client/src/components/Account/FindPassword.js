@@ -44,7 +44,7 @@ function FindPassword({ isDarkMode }) {
     <>
     <div className='FindPassword'>
       <div className={`findpw_box ${isDarkMode ? 'dark-mode' : ''}`}>
-        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findpw_logo'/></Link>
+        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findpw_logo' alt='logo'/></Link>
         <div className='findpw_main'>
           <p className={isFocused.id ? 'focused' : ''}>아이디</p>
           <input 

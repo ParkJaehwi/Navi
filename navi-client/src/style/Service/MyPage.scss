@@ -1,21 +1,126 @@
 .MyPage{
-  display: grid;
+  display: flex;
   justify-content: center;
-  align-items: center;
   .myPageContent {
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 1vw;
     box-shadow: 0 0.3vw 0.6vw rgba(0, 0, 0, 0.1);
-    text-align: center;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 50vw;
-    height: auto;
-    justify-content: center;
-    margin-top: 7vh;
-    font-size: 1vw;
+    text-align: center;
+    height: 70vh;
+    margin-top: 8vh;
     &.dark-mode {
       background-color: #202020;
       color: #fcfcfc;
+    }
+    .mypageLogo{
+      margin-top: 10vh;
+      width: 4vw;
+      border: 0.01vw solid rgb(210, 210, 210);
+      padding: 1.2vw;
+      border-radius: 5vw;
+      box-shadow: 0 0.3vw 0.6vw rgba(0, 0, 0, 0.1);
+    }
+    .myPageP{
+      font-size: 1vw;
+      margin-top: 3vh;
+    }
+    .myPageID{
+      font-size: 1.5vw;
+      margin-top: 3vh;
+      margin-bottom: 0;
+    }
+    .myPageEmail{
+      font-size: 0.8vw;
+      margin-top: 3vh;
+      color: gray;
+    }
+    .myPageError{
+      font-size: 1vw;
+      color: red;
+    }
+    .mymapBtn{
+      margin-top: 10vh;
+      color: black;
+      text-decoration: none;
+      width: 10vw;
+      font-size: 0.9vw;
+      padding: 2vh 0;
+      border-radius: 0.1vw;
+      background: transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+      background: #ffffff;
+      outline: none;
+      &:hover{
+        background-color: white;
+      }
+      &:before,
+      &:after{
+        content:'';
+        position:absolute;
+        top:0;
+        right:0;
+        height:0.3vh;
+        width:0;
+        background: #F8F252;
+        transition:200ms ease all;
+      }
+      &:after{
+        right:inherit;
+        top:inherit;
+        left:0;
+        bottom:0;
+      }
+      &:hover:before,
+      &:hover:after{
+        width:100%;
+        transition:400ms ease all;
+      }
+    }
+    .resetpwBtn{
+      margin-top: 2vh;
+      color: black;
+      text-decoration: none;
+      width: 10vw;
+      font-size: 0.9vw;
+      padding: 2vh 0;
+      border-radius: 0.1vw;
+      background: transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+      background: #ffffff;
+      outline: none;
+      &:hover{
+        background-color: white;
+      }
+      &:before,
+      &:after{
+        content:'';
+        position:absolute;
+        top:0;
+        right:0;
+        height:0.3vh;
+        width:0;
+        background: #F8F252;
+        transition:200ms ease all;
+      }
+      &:after{
+        right:inherit;
+        top:inherit;
+        left:0;
+        bottom:0;
+      }
+      &:hover:before,
+      &:hover:after{
+        width:100%;
+        transition:400ms ease all;
+      }
     }
   }
 }

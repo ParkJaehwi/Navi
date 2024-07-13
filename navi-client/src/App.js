@@ -11,6 +11,7 @@ import Custom from "./components/Service/Custom";
 import Header from "./components/Service/Header";
 import MyPage from "./components/Service/MyPage";
 import ResetPassword from "./components/Account/ResetPassword";
+import MyMap from "./components/Service/MyMap";
 import { Navigate } from 'react-router-dom';
 
 
@@ -79,6 +80,12 @@ function App() {
         <Route path="/MyPage" element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
             <MyPage isDarkMode={isDarkMode} setIsLoggedIn={setIsLoggedIn} />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/MyMap" element={
+          <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <MyMap isDarkMode={isDarkMode} setIsLoggedIn={setIsLoggedIn} />
           </ProtectedRoute>
         } />
 

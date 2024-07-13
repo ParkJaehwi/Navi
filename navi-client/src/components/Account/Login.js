@@ -44,7 +44,7 @@ function Login({ isDarkMode, setIsLoggedIn }) {
     <>
     <div className='Login'>
       <div className={`login_box ${isDarkMode ? 'dark-mode' : ''}`}>
-        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo'/></Link>
+        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo' alt='logo'/></Link>
         <div className='login_main'>
           <p className={isFocused1 ? 'focused' : ''}>아이디</p>
           <input 
