@@ -1,7 +1,12 @@
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
-import openai
+import pandas as pd
 import os
+import random
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain.prompts import ChatPromptTemplate
+from langchain.schema.runnable import RunnableMap
+
 from dotenv import load_dotenv
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,11 +19,92 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}}, supports_
 
 # 환경 변수 로드
 load_dotenv()
-GPT_API_KEY = os.getenv('GPT_API_KEY')
 
-# OpenAI API 클라이언트 초기화
-openai.api_key = GPT_API_KEY
 
+# Google Generative AI API 키 설정
+os.environ["GOOGLE_API_KEY"] = os.getenv('GEMINI_API_KEY')
+
+# 언어 모델 초기화
+llm = ChatGoogleGenerativeAI(model="gemini-pro")
+
+# CSV 파일 경로
+csv_path = "filtered_spot_data.csv"
+
+# CSV 파일 읽기
+df = pd.read_csv(csv_path)
+print("CSV 데이터 로드 완료:")
+
+# DataFrame 필터링 및 랜덤 섞기 함수
+def filter_data(areacode, categories):
+    filtered_df = df[(df['areacode'] == int(areacode)) & (df['cat2'].isin(categories))]
+    if filtered_df.empty:
+        print(f"해당 areacode: {areacode} 및 카테고리: {categories}에 대한 데이터를 찾을 수 없습니다.")
+    else:
+        filtered_df = filtered_df.sample(frac=1).reset_index(drop=True)  # 데이터 랜덤 섞기
+        filtered_df.to_csv('가공.csv', index=False)
+        print(filtered_df)
+        print("Finished filtering ")
+    return filtered_df
+
+# 필터링된 DataFrame을 텍스트로 변환
+def df_to_text(filtered_df):
+    text = ""
+    for index, row in filtered_df.iterrows():
+        text += f"title: {row['title']}, areacode: {row['areacode']}, address: {row['addr1']}, category: {row['cat2']}, latitude: {row['mapx']}, longitude: {row['mapy']}, image: {row['firstimage']}\n"
+    return text
+
+# GPT에게 질문 및 컨텍스트 전달
+def ask_gpt(question, context):
+    print("Gemini 응답을 기다리고 있습니다.")
+    template = """
+    다음 context를 기반으로 조건에 맞는 데이터를 10개 제공해주세요.
+
+    context: {context}
+    조건: {question}
+    
+    출력은 다음과 같은 json형식으로 출력하세요. 데이터가 없으면 null을 넣어서 출력하세요. 오직 10개만 출력하세요.
+    
+    <출력형식>
+    [
+        {{
+            "title": ,
+            "areacode": ,
+            "address": ,
+            "category": ,
+            "latitude": ,
+            "longitude": ,
+            "image": ,
+        }},
+        ...
+    ]
+    """
+    
+    prompt = ChatPromptTemplate.from_template(template)
+    gemini = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0)
+    
+    chain = RunnableMap({
+        "context": lambda x: context,
+        "question": lambda x: question
+    }) | prompt | gemini
+    result = chain.invoke({'context': context, 'question': question})
+    return result.content
+
+# 메인 함수
+def main():
+    areacode = '1'
+    cat2 = ['A0101', 'A0102']
+    filtered_df = filter_data(areacode, cat2)
+    if not filtered_df.empty:
+        context = df_to_text(filtered_df)
+        question = f"areacode: {areacode}, category: {cat2}"
+        answer = ask_gpt(question, context)
+        print(answer)
+    else:
+        print("조건에 맞는 데이터를 찾을 수 없습니다.")
+
+
+
+#------------------------------------------------------------------------
 # 환경 변수에서 데이터베이스 설정 가져오기
 DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
@@ -159,19 +245,7 @@ def reset_password():
     cursor.close()
     return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
-@app.route('/ask', methods=['GET'])
-def ask_gpt():
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "너는 여행 동선을 짜주는 ai비서야"},
-            {"role": "user", "content": "아쿠아플라넷 제주: 제주 서귀포시 성산읍 섭지코지로 95 아쿠아플라넷 제주 산방산 탄산온천: 제주 서귀포시 안덕면 사계북로41번길 192 제주항공우주박물관: "
-            + "제주 서귀포시 안덕면 녹차분재로 218 제주항공우주박물관 대포주상절리: 제주 서귀포시 이어도로 36-24 더본 호텔 제주 :제주 서귀포시 색달로 18"+"내가 준 데이터 중에서 3개만 뽑아서 제주도 1박 2일 일정 짜주고 리턴 데이터는 json으로"}
-        ],
-    )
-    data = completion.choices[0].message.content
-    print(completion.choices[0].message.content)
-    return jsonify({'data': data})
-
 if __name__ == '__main__':
+    main()
     app.run(debug=True)
+

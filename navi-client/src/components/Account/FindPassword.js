@@ -1,5 +1,5 @@
 // FindPassword.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../../style/Account/FindPassword.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
@@ -33,6 +33,13 @@ function FindPassword({ isDarkMode }) {
     }
   };
 
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage('');  // alert 후 메시지를 초기화하여 다시 시도할 때 alert가 뜨도록 함
+    }
+  }, [message]);
+  
   return (
     <>
     <div className='FindPassword'>
@@ -58,7 +65,6 @@ function FindPassword({ isDarkMode }) {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button className={`findpwBtn ${isDarkMode ? 'dark-mode' : ''}`} onClick={handleFindPassword}>비밀번호 찾기</button>
-          {message && <p>{message}</p>}
         </div>
         <div className='findpw_menu'>
           <Link to="/login" className={`findpw_link ${isDarkMode ? 'dark-mode' : ''}`}>로그인으로 돌아가기</Link>

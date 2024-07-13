@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import "../../style/Account/ResetPassword.scss";
@@ -38,6 +38,13 @@ function ResetPassword({ isDarkMode }) {
     }
   };
 
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage('');  // alert 후 메시지를 초기화하여 다시 시도할 때 alert가 뜨도록 함
+    }
+  }, [message]);
+
   return (
     <div className='ResetPassword'>
       <div className={`resetpw_box ${isDarkMode ? 'dark-mode' : ''}`}>
@@ -64,7 +71,6 @@ function ResetPassword({ isDarkMode }) {
           <button onClick={handleResetPassword} className={`resetpwBtn ${isDarkMode ? 'dark-mode' : ''}`}>
             비밀번호 재설정
           </button>
-          {message && <p>{message}</p>}
         </div>
       </div>
     </div>

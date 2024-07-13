@@ -1,5 +1,5 @@
 // FindId.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "../../style/Account/FindId.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
@@ -18,7 +18,7 @@ function FindId({ isDarkMode }) {
         email
       }, { withCredentials: true }); // withCredentials 추가
       if (response.status === 200) {
-        alert(`아이디는: ${response.data.username}`);
+        alert(`아이디: ${response.data.username}`);
       } else {
         setMessage('회원정보가 없습니다.');
       }
@@ -26,6 +26,13 @@ function FindId({ isDarkMode }) {
       setMessage('회원정보가 없습니다.');
     }
   };
+
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage('');  // alert 후 메시지를 초기화하여 다시 시도할 때 alert가 뜨도록 함
+    }
+  }, [message]);
 
   return (
     <>
@@ -43,7 +50,6 @@ function FindId({ isDarkMode }) {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button className={`findidBtn ${isDarkMode ? 'dark-mode' : ''}`} onClick={handleFindId}>아이디 찾기</button>
-          {message && <p>{message}</p>}
         </div>
         <div className='findid_menu'>
           <Link to="/login" className={`findid_link ${isDarkMode ? 'dark-mode' : ''}`}>로그인으로 돌아가기</Link>

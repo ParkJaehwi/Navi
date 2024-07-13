@@ -10,9 +10,11 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 venv\Scripts\activate
 pip install Flask
 pip install flask-cors
-pip install openai
 pip install python-dotenv
 pip install mysql-connector-python
+pip install pandas
+pip install langchain langchain_google_genai
+
 
 // 서버 실행
 
