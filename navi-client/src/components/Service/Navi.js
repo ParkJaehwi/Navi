@@ -3,48 +3,65 @@ import { useLocation } from 'react-router-dom';
 import KakaoMap from '../ETC/KakaoMap';
 
 function Navi({ isDarkMode }) {
-    const [data, setData] = useState(null);
+    const [selectedCode, setSelectedCode] = useState("");
+    const cities = [
+        { code: "1", name: "서울" },
+        { code: "2", name: "인천" },
+        { code: "3", name: "대전" },
+        { code: "4", name: "대구" },
+        { code: "5", name: "광주" },
+        { code: "6", name: "부산" },
+        { code: "7", name: "울산" },
+        { code: "8", name: "세종특별자치시" },
+        { code: "31", name: "경기도" },
+        { code: "32", name: "강원특별자치도" },
+        { code: "33", name: "충청북도" },
+        { code: "34", name: "충청남도" },
+        { code: "35", name: "경상북도" },
+        { code: "36", name: "경상남도" },
+        { code: "37", name: "전북특별자치도" },
+        { code: "38", name: "전라남도" },
+        { code: "39", name: "제주도" }
+    ];
 
-    useEffect(() => {
-        if (data) {
-          console.log("Updated data:", data);
-          console.log("Type of data:", typeof data);
-        }
-      }, [data]);
-    
-    const handleClick = () => {
-    setData(null);
-    fetch("http://localhost:5000/ask?areacode=32&category=A0101,A0102")
-        .then((response) => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        return response.json();
-        })
-        .then((response) => {
-        const parsedData = JSON.parse(response.result); // JSON 문자열을 객체로 변환
-        setData(parsedData); // 변환된 데이터를 상태로 설정
-        })
-        .catch((error) => {
-        console.error("There has been a problem with your fetch operation:", error);
-        });
-    };
-      
+    const handleChange = (e) => {
+        setSelectedCode(e.target.value);
+    };    
 
     const location = useLocation();
     const { mostFrequentOption, score } = location.state || {};
 
     const resultDisplay = Array.isArray(mostFrequentOption)
-        ? `가장 높은 점수를 받은 카테고리: ${mostFrequentOption.join(', ')}`
-        : `가장 높은 점수를 받은 카테고리: ${mostFrequentOption}`;
+        ? `${mostFrequentOption.join(', ')}`
+        : `${mostFrequentOption}`;
+
+
+    const handleSubmit = () => {
+        alert(`선택된 코드: ${selectedCode}\n선택된 카테고리: ${resultDisplay}`);
+    };
 
     return (
         <div style={{ textAlign: 'center', margin: '20px' }}>
             <h1>Navi</h1>
             <KakaoMap />
-            <p>{resultDisplay}</p>
-            <button onClick={handleClick}>버튼임</button>
 
+            <div>
+                <h3>도시 선택</h3>
+                {cities.map((city) => (
+                    <div key={city.code}>
+                    <label>
+                        <input
+                        type="radio"
+                        name="city"
+                        value={city.code}
+                        onChange={handleChange}
+                        />
+                        {city.name}
+                    </label>
+                    </div>
+                ))}
+                <button onClick={handleSubmit}>제출</button>
+            </div>
         </div>
     );
 }
