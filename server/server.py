@@ -8,14 +8,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # 세션을 위한 비밀 키 설정
-CORS(app, supports_credentials=True)  # 모든 요청에 대해 CORS 허용 및 자격 증명 지원
+
+# CORS 설정
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
 # 환경 변수 로드
 load_dotenv()
 GPT_API_KEY = os.getenv('GPT_API_KEY')
 
 # OpenAI API 클라이언트 초기화
-client = openai.OpenAI(api_key=GPT_API_KEY)
+openai.api_key = GPT_API_KEY
 
 # 환경 변수에서 데이터베이스 설정 가져오기
 DB_HOST = os.getenv('DB_HOST')
@@ -38,7 +40,20 @@ def signup():
     _password = generate_password_hash(data['password'])
     _email = data['email']
 
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
+
+    query = "SELECT * FROM user WHERE username = %s"
+    cursor.execute(query, (_username,))
+    user = cursor.fetchone()
+    
+    # 쿼리 결과를 모두 소진
+    while cursor.nextset():
+        cursor.fetchall()
+    
+    if user:
+        cursor.close()
+        return jsonify({"message": "아이디가 이미 존재합니다."}), 409
+    
     query = "INSERT INTO user (username, password, email) VALUES (%s, %s, %s)"
     values = (_username, _password, _email)
     cursor.execute(query, values)
@@ -54,12 +69,16 @@ def login():
     values = (data['username'],)
     cursor.execute(query, values)
     user = cursor.fetchone()
+    
+    # 남아있는 결과를 소진
+    while cursor.nextset():
+        cursor.fetchall()
+
     cursor.close()
     if user and check_password_hash(user['password'], data['password']):
         session['user_id'] = user['user_id']
         session['username'] = user['username']
         return jsonify({"message": "로그인 되었습니다."}), 200
-    
     else:
         return jsonify({"message": "회원정보가 없습니다."}), 401
 
@@ -87,8 +106,12 @@ def find_password():
     values = (username, email)
     cursor.execute(query, values)
     user = cursor.fetchone()
-    cursor.close()
 
+    # 남아있는 결과를 소진
+    while cursor.nextset():
+        cursor.fetchall()
+
+    cursor.close()
     if user:
         return jsonify({"message": "유효한 사용자입니다."}), 200
     else:
@@ -104,8 +127,12 @@ def find_username():
     values = (email,)
     cursor.execute(query, values)
     user = cursor.fetchone()
-    cursor.close()
 
+    # 남아있는 결과를 소진
+    while cursor.nextset():
+        cursor.fetchall()
+
+    cursor.close()
     if user:
         return jsonify({"username": user['username']}), 200
     else:
@@ -130,12 +157,11 @@ def reset_password():
     cursor.execute(query, values)
     db.commit()
     cursor.close()
-
     return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
 @app.route('/ask', methods=['GET'])
 def ask_gpt():
-    completion = client.chat.completions.create(
+    completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "너는 여행 동선을 짜주는 ai비서야"},
