@@ -53,6 +53,13 @@ function SignUp({ isDarkMode }) {
     }
   };
 
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage('');  // alert 후 메시지를 초기화하여 다시 시도할 때 alert가 뜨도록 함
+    }
+  }, [message]);
+
   return (
     <>
     <div className='SignUp'>
@@ -103,7 +110,6 @@ function SignUp({ isDarkMode }) {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button onClick={handleSignup} className={`signupBtn ${isDarkMode ? 'dark-mode' : ''}`}>회원가입</button>
-          {message && <p>{message}</p>}
         </div>
         <div className='signup_menu'>
           <Link to="/Login" className={`signup_link ${isDarkMode ? 'dark-mode' : ''}`}>로그인으로 돌아가기</Link>
