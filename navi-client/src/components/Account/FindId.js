@@ -18,7 +18,7 @@ function FindId({ isDarkMode }) {
         email
       }, { withCredentials: true }); // withCredentials 추가
       if (response.status === 200) {
-        alert(`아이디는: ${response.data.username}`);
+        alert(`아이디: ${response.data.username}`);
       } else {
         setMessage('회원정보가 없습니다.');
       }
