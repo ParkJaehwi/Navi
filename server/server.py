@@ -62,7 +62,7 @@ def ask_gpt(question, context):
     context: {context}
     조건: {question}
     
-    출력은 다음과 같은 json형식으로 출력하세요. 데이터가 없으면 null을 넣어서 출력하세요. 오직 10개만 출력하세요.
+    출력은 다음과 같은 json형식으로 출력하세요. 데이터가 없으면 null을 넣어서 출력하세요. content에는 해당 관광지에 대한 자세한 설명을 추가하세요. 오직 10개만 출력하세요.
     
     <출력형식>
     [
@@ -112,12 +112,12 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_DATABASE = os.getenv('DB_DATABASE')
 
 # MySQL DB 연결 설정
-db = mysql.connector.connect(
-    host=DB_HOST,
-    user=DB_USER,
-    password=DB_PASSWORD,
-    database=DB_DATABASE
-)
+# db = mysql.connector.connect(
+#     host=DB_HOST,
+#     user=DB_USER,
+#     password=DB_PASSWORD,
+#     database=DB_DATABASE
+# )
 
 @app.route('/api/signup', methods=['POST'])
 def signup():
