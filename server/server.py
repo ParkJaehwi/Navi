@@ -20,6 +20,7 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}}, supports_
 # 환경 변수 로드
 load_dotenv()
 
+
 # Google Generative AI API 키 설정
 os.environ["GOOGLE_API_KEY"] = os.getenv('GEMINI_API_KEY')
 
@@ -100,6 +101,7 @@ def main():
         print(answer)
     else:
         print("조건에 맞는 데이터를 찾을 수 없습니다.")
+
 
 
 #------------------------------------------------------------------------
@@ -243,7 +245,7 @@ def reset_password():
     cursor.close()
     return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
-
 if __name__ == '__main__':
     main()
     app.run(debug=True)
+
