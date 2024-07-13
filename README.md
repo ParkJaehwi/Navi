@@ -14,6 +14,7 @@ pip install python-dotenv
 pip install mysql-connector-python
 pip install pandas
 pip install langchain langchain_google_genai
+pip install openai
 
 
 // 서버 실행
