@@ -64,7 +64,7 @@ function SignUp({ isDarkMode }) {
     <>
     <div className='SignUp'>
       <div className={`signup_box ${isDarkMode ? 'dark-mode' : ''}`}>
-        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='signup_logo'/></Link>
+        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='signup_logo' alt='logo'/></Link>
         <div className='signup_main'>
           <p className={isFocused1 ? 'focused' : ''}>아이디</p>
           <input 

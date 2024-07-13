@@ -48,7 +48,7 @@ function ResetPassword({ isDarkMode }) {
   return (
     <div className='ResetPassword'>
       <div className={`resetpw_box ${isDarkMode ? 'dark-mode' : ''}`}>
-      <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo'/></Link>
+      <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='login_logo' alt='logo'/></Link>
         <div className='resetpw_main'>
           <p className={isFocused1 ? 'focused' : ''}>새 비밀번호</p>
           <input

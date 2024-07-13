@@ -38,7 +38,7 @@ function FindId({ isDarkMode }) {
     <>
     <div className='FindId'>
       <div className={`findid_box ${isDarkMode ? 'dark-mode' : ''}`}>
-        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findid_logo'/></Link>
+        <Link to="/"><img src={isDarkMode ? logo_dark : logo_light} className='findid_logo' alt='logo'/></Link>
         <div className='findid_main'>
           <p className={isFocused ? 'focused' : ''}>이메일</p>
           <input 
