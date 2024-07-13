@@ -10,6 +10,9 @@ import Navi from "./components/Service/Navi";
 import Custom from "./components/Service/Custom";
 import Header from "./components/Service/Header";
 import MyPage from "./components/Service/MyPage";
+import ResetPassword from "./components/Account/ResetPassword";
+import { Navigate } from 'react-router-dom';
+
 
 import "./App.css";
 function App() {
@@ -17,6 +20,15 @@ function App() {
     const savedMode = localStorage.getItem('dark-mode');
     return savedMode === 'enabled';
   });
+
+  const ProtectedRoute = ({ isLoggedIn, children }) => {
+    return isLoggedIn ? children : <Navigate to="/Login" />;
+  };
+  
+  const PublicRoute = ({ isLoggedIn, children }) => {
+    return isLoggedIn ? <Navigate to="/MyPage" /> : children;
+  };
+
 
   useEffect(() => {
     if (isDarkMode) {
@@ -42,11 +54,36 @@ function App() {
         <Route path="/Travel" element={<Travel isDarkMode={isDarkMode}/>} />
         <Route path="/Navi" element={<Navi isDarkMode={isDarkMode}/>} />
         <Route path="/Custom" element={<Custom isDarkMode={isDarkMode}/>} />
-        <Route path="/Login" element={<Login isDarkMode={isDarkMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
-        <Route path="/SignUp" element={<SignUp isDarkMode={isDarkMode}/>} />
-        <Route path="/FindId" element={<FindId isDarkMode={isDarkMode}/>} />
-        <Route path="/FindPassword" element={<FindPassword isDarkMode={isDarkMode}/>} />
-        <Route path="/MyPage" element={<MyPage isDarkMode={isDarkMode} setIsLoggedIn={setIsLoggedIn} />} />
+        
+        <Route path="/Login" element={
+          <PublicRoute isLoggedIn={isLoggedIn}>
+            <Login isDarkMode={isDarkMode} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+          </PublicRoute>
+        } />
+        <Route path="/SignUp" element={
+          <PublicRoute isLoggedIn={isLoggedIn}>
+            <SignUp isDarkMode={isDarkMode}/>
+          </PublicRoute>
+        } />
+        <Route path="/FindId" element={
+          <PublicRoute isLoggedIn={isLoggedIn}>
+            <FindId isDarkMode={isDarkMode}/>
+          </PublicRoute>
+        } />
+        <Route path="/FindPassword" element={
+          <PublicRoute isLoggedIn={isLoggedIn}>
+            <FindPassword isDarkMode={isDarkMode}/>
+          </PublicRoute>
+        } />
+
+        <Route path="/MyPage" element={
+          <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <MyPage isDarkMode={isDarkMode} setIsLoggedIn={setIsLoggedIn} />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/reset_password/:username/:email" element={<ResetPassword isDarkMode={isDarkMode}/>} />
+        <Route path="/reset_password" element={<ResetPassword isDarkMode={isDarkMode}/>} />
       </Routes>
     </Router>
   );

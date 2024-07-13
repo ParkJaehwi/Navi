@@ -33,6 +33,13 @@ function Login({ isDarkMode, setIsLoggedIn }) {
     }
   };
 
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage('');  // alert 후 메시지를 초기화하여 다시 시도할 때 alert가 뜨도록 함
+    }
+  }, [message]);
+
   return (
     <>
     <div className='Login'>
@@ -58,7 +65,7 @@ function Login({ isDarkMode, setIsLoggedIn }) {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className={`loginBtn ${isDarkMode ? 'dark-mode' : ''}`} onClick={handleLogin}>로그인</button>
-          {message && <p>{message}</p>}
+          
         </div>
         <div className='login_menu'>
           <Link to="/FindPassword" className={`login_link ${isDarkMode ? 'dark-mode' : ''}`}>비밀번호찾기</Link>

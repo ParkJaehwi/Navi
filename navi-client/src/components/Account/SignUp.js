@@ -41,6 +41,7 @@ function SignUp({ isDarkMode }) {
       });
       setMessage(response.data.message);
       if (response.status === 201) {
+        window.alert('회원가입이 완료되었습니다.');  //sweetalert
         navigate('/login'); // 회원가입 성공 시 로그인 페이지로 이동
       }
     } catch (error) {
@@ -51,6 +52,13 @@ function SignUp({ isDarkMode }) {
       }
     }
   };
+
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage('');  // alert 후 메시지를 초기화하여 다시 시도할 때 alert가 뜨도록 함
+    }
+  }, [message]);
 
   return (
     <>
@@ -102,7 +110,6 @@ function SignUp({ isDarkMode }) {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button onClick={handleSignup} className={`signupBtn ${isDarkMode ? 'dark-mode' : ''}`}>회원가입</button>
-          {message && <p>{message}</p>}
         </div>
         <div className='signup_menu'>
           <Link to="/Login" className={`signup_link ${isDarkMode ? 'dark-mode' : ''}`}>로그인으로 돌아가기</Link>

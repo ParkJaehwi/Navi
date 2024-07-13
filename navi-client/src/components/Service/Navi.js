@@ -1,34 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import KakaoMap from '../ETC/KakaoMap';
 
 function Navi({ isDarkMode }) {
-    const location = useLocation();
-    const result = location.state || null;
+    const [data, setData] = useState(null);
 
-    if (!result) {
-        return <div>결과를 불러올 수 없습니다.</div>;
-    }
+    useEffect(() => {
+        if (data) {
+          console.log("Updated data:", data);
+          console.log("Type of data:", typeof data);
+        }
+      }, [data]);
+    
+    const handleClick = () => {
+    setData(null);
+    fetch("http://localhost:5000/ask?areacode=32&category=A0101,A0102")
+        .then((response) => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.json();
+        })
+        .then((response) => {
+        const parsedData = JSON.parse(response.result); // JSON 문자열을 객체로 변환
+        setData(parsedData); // 변환된 데이터를 상태로 설정
+        })
+        .catch((error) => {
+        console.error("There has been a problem with your fetch operation:", error);
+        });
+    };
+      
+
+    const location = useLocation();
+    const { mostFrequentOption, score } = location.state || {};
+
+    const resultDisplay = Array.isArray(mostFrequentOption)
+        ? `가장 높은 점수를 받은 카테고리: ${mostFrequentOption.join(', ')}`
+        : `가장 높은 점수를 받은 카테고리: ${mostFrequentOption}`;
 
     return (
         <div style={{ textAlign: 'center', margin: '20px' }}>
             <h1>Navi</h1>
-            <KakaoMap selectedOption={result.mostFrequentOption} />
-            <h1>퀴즈 결과</h1>
-            <p>가장 많이 선택된 옵션: {result.mostFrequentOption}</p>
-            <p>점수: {result.score}</p>
-            <p>해석: 
-                {result.mostFrequentOption === 1 && "자연을 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 2 && "역사를 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 3 && "휴양을 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 4 && "체험을 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 5 && "산업을 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 6 && "건축 / 조형물을 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 7 && "문화시설을 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 8 && "육상 레저를 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 9 && "수상 레저를 가장 많이 선택하셨습니다."}
-                {result.mostFrequentOption === 10 && "항공 레저를 가장 많이 선택하셨습니다."}
-            </p>
+            <KakaoMap />
+            <p>{resultDisplay}</p>
+            <button onClick={handleClick}>버튼임</button>
+
         </div>
     );
 }

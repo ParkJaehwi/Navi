@@ -1,6 +1,6 @@
 // FindPassword.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import "../../style/Account/FindPassword.scss";
 import logo_dark from "../../style/img/login_logo_dark.png";
 import logo_light from "../../style/img/login_logo_light.png";
@@ -15,6 +15,7 @@ function FindPassword({ isDarkMode }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleFindPassword = async () => {
     try {
@@ -23,7 +24,7 @@ function FindPassword({ isDarkMode }) {
         email
       }, { withCredentials: true }); // withCredentials 추가
       if (response.status === 200) {
-        alert(`비밀번호는: ${response.data.password}`);
+        navigate(`/reset_password/${username}/${email}`);
       } else {
         setMessage('회원정보가 없습니다.');
       }
@@ -32,6 +33,13 @@ function FindPassword({ isDarkMode }) {
     }
   };
 
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage('');  // alert 후 메시지를 초기화하여 다시 시도할 때 alert가 뜨도록 함
+    }
+  }, [message]);
+  
   return (
     <>
     <div className='FindPassword'>
@@ -57,7 +65,6 @@ function FindPassword({ isDarkMode }) {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button className={`findpwBtn ${isDarkMode ? 'dark-mode' : ''}`} onClick={handleFindPassword}>비밀번호 찾기</button>
-          {message && <p>{message}</p>}
         </div>
         <div className='findpw_menu'>
           <Link to="/login" className={`findpw_link ${isDarkMode ? 'dark-mode' : ''}`}>로그인으로 돌아가기</Link>

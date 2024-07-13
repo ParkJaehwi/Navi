@@ -27,11 +27,25 @@ const travelData = [
   { id: 10, name: '항공 레저', image: Place10, info: "항공 레저는 스카이다이빙, 패러글라이딩, 열기구 등 하늘에서의 다양한 액티비티를 체험할 수 있는 장소들로 구성되어 있습니다."},
 ];
 
+const travelCategoryMap = {
+  1: 'a',
+  2: 'b',
+  3: 'c',
+  4: 'd',
+  5: 'e',
+  6: 'f',
+  7: 'g',
+  8: 'h',
+  9: 'i',
+  10: 'j',
+};
+
 function Travel({ isDarkMode }) {
   const navigate = useNavigate();
 
   const handleClick = (place) => {
-    navigate("/Navi", { state: { mostFrequentOption: place.id, score: 1 } });
+    const category = travelCategoryMap[place.id];
+    navigate("/Navi", { state: { mostFrequentOption: category, score: 1 } });
   };
   
   return (
@@ -55,6 +69,5 @@ function Travel({ isDarkMode }) {
     </div>
   );
 }
-
 
 export default Travel;
