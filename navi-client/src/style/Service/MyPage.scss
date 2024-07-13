@@ -1,13 +1,21 @@
-.myPageContent {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  text-align: center;
-}
-
-.dark-mode .myPageContent {
-  background-color: #333;
-  color: #fff;
+.MyPage{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  .myPageContent {
+    background-color: #fff;
+    border-radius: 1vw;
+    box-shadow: 0 0.3vw 0.6vw rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: grid;
+    width: 50vw;
+    height: auto;
+    justify-content: center;
+    margin-top: 7vh;
+    font-size: 1vw;
+    &.dark-mode {
+      background-color: #202020;
+      color: #fcfcfc;
+    }
+  }
 }

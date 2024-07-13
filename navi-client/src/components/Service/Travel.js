@@ -28,17 +28,18 @@ const travelData = [
 ];
 
 const travelCategoryMap = {
-  1: 'a',
-  2: 'b',
-  3: 'c',
-  4: 'd',
-  5: 'e',
-  6: 'f',
-  7: 'g',
-  8: 'h',
-  9: 'i',
-  10: 'j',
+  1: "A0101",
+  2: "A0201",
+  3: "A0202",
+  4: "A0203",
+  5: "A0204",
+  6: "A0205",
+  7: "A0206",
+  8: "A0302",
+  9: "A0303",
+  10: "A0304",
 };
+
 
 function Travel({ isDarkMode }) {
   const navigate = useNavigate();
