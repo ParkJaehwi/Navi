@@ -245,6 +245,24 @@ def reset_password():
     cursor.close()
     return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
+@app.route('/api/user', methods=['GET'])
+def get_user_data():
+    if 'user_id' not in session:
+        return jsonify({"message": "로그인이 필요합니다."}), 401
+    
+    user_id = session['user_id']
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT username, email FROM user WHERE user_id = %s"
+    cursor.execute(query, (user_id,))
+    user = cursor.fetchone()
+    
+    cursor.close()
+    
+    if user:
+        return jsonify(user), 200
+    else:
+        return jsonify({"message": "사용자 정보를 찾을 수 없습니다."}), 404
+
 if __name__ == '__main__':
     main()
     app.run(debug=True)
