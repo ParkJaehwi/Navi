@@ -40,10 +40,10 @@ def filter_data(areacode, categories):
     if filtered_df.empty:
         print(f"해당 areacode: {areacode} 및 카테고리: {categories}에 대한 데이터를 찾을 수 없습니다.")
     else:
-        filtered_df = filtered_df.sample(frac=1).reset_index(drop=True)  # 데이터 랜덤 섞기
+        filtered_df = filtered_df.sample(frac=1).reset_index(drop=True).head(10)  # 데이터 랜덤 섞기
         filtered_df.to_csv('가공.csv', index=False)
         print(filtered_df)
-        print("Finished filtering ")
+        print("데이터 필터링 완료")
     return filtered_df
 
 # 필터링된 DataFrame을 텍스트로 변환
@@ -51,18 +51,19 @@ def df_to_text(filtered_df):
     text = ""
     for index, row in filtered_df.iterrows():
         text += f"title: {row['title']}, areacode: {row['areacode']}, address: {row['addr1']}, category: {row['cat2']}, latitude: {row['mapx']}, longitude: {row['mapy']}, image: {row['firstimage']}\n"
+    print('Df > Text 변환 완료')
     return text
 
 # GPT에게 질문 및 컨텍스트 전달
-def ask_gpt(question, context):
-    print("Gemini 응답을 기다리고 있습니다.")
+def call_gemini(question, context):
+    print("Gemini 응답을 기다리고 있습니다...")
     template = """
     다음 context를 기반으로 조건에 맞는 데이터를 10개 제공해주세요.
 
     context: {context}
     조건: {question}
     
-    출력은 다음과 같은 json형식으로 출력하세요. 데이터가 없으면 null을 넣어서 출력하세요. content에는 해당 관광지에 대한 자세한 설명을 추가하세요. 오직 10개만 출력하세요.
+    출력은 다음과 같은 json형식으로 출력하세요. 데이터가 없으면 null을 넣어서 출력하세요. content에는 해당 관광지에 대한 간단한 설명을 추가하세요. 오직 10개만 출력하세요. 끝이 잘리지 않게 주의하여 완벽한 json형식으로 출력해주세요.
     
     <출력형식>
     [
@@ -74,6 +75,7 @@ def ask_gpt(question, context):
             "latitude": ,
             "longitude": ,
             "image": ,
+            "content": 
         }},
         ...
     ]
@@ -89,16 +91,19 @@ def ask_gpt(question, context):
     result = chain.invoke({'context': context, 'question': question})
     return result.content
 
-# 메인 함수
-def main():
-    areacode = '1'
-    cat2 = ['A0101', 'A0102']
-    filtered_df = filter_data(areacode, cat2)
+@app.route('/search', methods=['GET'])
+def return_data():
+    areacode = request.args.get('areacode')
+    category = request.args.get('category')
+    categories = category.split(',') if category else []
+    filtered_df = filter_data(areacode, categories)
     if not filtered_df.empty:
         context = df_to_text(filtered_df)
-        question = f"areacode: {areacode}, category: {cat2}"
-        answer = ask_gpt(question, context)
-        print(answer)
+        question = f"areacode: {areacode}, category: {category}"
+        result = call_gemini(question, context)
+        print(result)
+        return jsonify({"result": result})
+
     else:
         print("조건에 맞는 데이터를 찾을 수 없습니다.")
 
@@ -246,6 +251,5 @@ def reset_password():
     return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
 if __name__ == '__main__':
-    main()
     app.run(debug=True)
 
