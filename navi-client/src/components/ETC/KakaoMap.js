@@ -1,130 +1,135 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import PlaceDetail from '../Service/PlaceDetail';
+import React, { useEffect, useState } from 'react';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import noneimg from "../../style/img/noneImg.png";
 
-const { kakao } = window;
+const KakaoMap = ({ data }) => {
+  const [position, setPosition] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isMapReady, setIsMapReady] = useState(false);
+  
+  // errorImg를 상단에서 선언 및 초기화
+  const errorImg = noneimg;
 
-function KakaoMap({ selectedOption }) {
-  const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
-  const [places, setPlaces] = useState([]);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-
-  // Memoize locationMap to avoid recreating it on every render
-  const locationMap = useMemo(() => ({
-    1: '서울',
-    2: '양주',
-    3: '여주',
-    4: '부산',
-    5: '가평',
-    6: '거제',
-    7: '합천',
-    8: '홍천',
-    9: '익산',
-    10: '포천'
-  }), []);
-
-  // Initialize the map and fetch places data only once
   useEffect(() => {
-    const container = document.getElementById('map');
-    const options = {
-      center: new kakao.maps.LatLng(36.2683, 127.6358),
-      level: 13
-    };
-    const mapInstance = new kakao.maps.Map(container, options);
-    
-    setMap(mapInstance);
-
-    // Fetch data only once after map is initialized
-    fetch('/data.json')
-      .then(response => response.json())
-      .then(data => setPlaces(data));
-  }, []); // Empty dependency array means this effect runs only once after the initial render
-
-  // Memoized searchPlace function to avoid recreation on every render
-  const searchPlace = useCallback((keyword) => {
-    if (!map) return; // Ensure map is initialized
-
-    // Remove existing markers
-    setMarkers(prevMarkers => {
-      prevMarkers.forEach(marker => marker.setMap(null));
-      return [];
-    });
-
-    setSelectedPlace(null);
-
-    // Filter places based on the keyword
-    const filteredPlaces = places.filter(place => 
-      place.address.includes(keyword) || place.title.includes(keyword)
-    );
-
-    // Create new markers for the filtered places
-    const newMarkers = filteredPlaces.map(place => {
-      const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(place.longitude, place.latitude),
-        map: map
-      });
-
-      // Add event listeners to the marker
-      kakao.maps.event.addListener(marker, 'click', () => setSelectedPlace(place));
-
-      const infowindow = new kakao.maps.InfoWindow({
-        content: `<div style="padding:5px;">${place.title}</div>`
-      });
-
-      kakao.maps.event.addListener(marker, 'mouseover', () => infowindow.open(map, marker));
-      kakao.maps.event.addListener(marker, 'mouseout', () => infowindow.close());
-
-      return marker;
-    });
-
-    setMarkers(newMarkers);
-
-    // Adjust the map bounds to fit the markers
-    if (filteredPlaces.length > 0) {
-      const bounds = new kakao.maps.LatLngBounds();
-      filteredPlaces.forEach(place => {
-        bounds.extend(new kakao.maps.LatLng(place.longitude, place.latitude));
-      });
-      map.setBounds(bounds);
-    }
-  }, [map, places]); // Dependencies of searchPlace
-
-  // Handle selectedOption change
-  useEffect(() => {
-    if (selectedOption && map) {
-      const location = locationMap[selectedOption];
-      if (location) {
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-          searchInput.value = location;
-          searchPlace(location);
+    // 현재 위치 가져오기
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setPosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setIsMapReady(true);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          // 기본 위치 설정 (예: 서울시청)
+          setPosition({ lat: 37.5665, lng: 126.9780 });
+          setIsMapReady(true);
         }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      // 기본 위치 설정 (예: 서울시청)
+      setPosition({ lat: 37.5665, lng: 126.9780 });
+      setIsMapReady(true);
+    }
+  }, []);
+
+  const dataItems = data && data.length > 0 ? data.map((item, index) => ({
+    key: index,
+    title: `${index + 1}. ${item.title}`,
+    areacode: item.areacode,
+    address: item.address,
+    category: item.category,
+    latitude: item.latitude,
+    longitude: item.longitude,
+    image: item.image === null || item.image === "nan" ? errorImg : item.image,
+    content: item.content
+  })) : [];
+  
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const firstItem = dataItems[0];
+      const lat = firstItem.latitude;
+      const lng = firstItem.longitude;
+      if (!isNaN(lat) && !isNaN(lng)) {
+        setPosition({ lat, lng });
+        console.log("Updated position from data:", { lat, lng });
+      } else {
+        console.error("Invalid latitude or longitude in first data item:", data[0]);
       }
     }
-  }, [selectedOption, locationMap, searchPlace, map]); // Dependencies of this effect
+  }, [data]);
+
+  const handleSetPosition = (item) => {
+    const lat = item.latitude;
+    const lng = item.longitude;
+    if (!isNaN(lat) && !isNaN(lng)) {
+      setPosition({ lat, lng });
+      setSelectedItem(item);
+      console.log("Set position to:", { lat, lng });
+    } else {
+      console.error("Invalid latitude or longitude in item:", item);
+    }
+  };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ flex: 1 }}>
-        <div>
-          <input type="text" id="searchInput" placeholder="지역 검색" />
-          <button onClick={() => {
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-              searchPlace(searchInput.value);
+    <div>
+      {isMapReady && position && (
+        <Map
+          center={position}
+          style={{ width: '100%', height: '400px' }}
+          level={3}
+        >
+          <MapMarker position={position} />
+          {data && data.map((item, index) => {
+            const lat = parseFloat(item.latitude);
+            const lng = parseFloat(item.longitude);
+            if (!isNaN(lat) && !isNaN(lng)) {
+              return (
+                <MapMarker 
+                  key={index}
+                  position={{ lat, lng }}
+                  onClick={() => handleSetPosition(item)}
+                />
+              );
             }
-          }}>검색</button>
+            return null;
+          })}
+        </Map>
+      )}
+      <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+        {data && data.length > 0 ? (
+          data.map((item, index) => (
+            <div key={index} onClick={() => handleSetPosition(item)} style={{cursor: 'pointer'}}>
+              <h3>{index + 1}. {item.title}</h3>
+              <div>Areacode: {item.areacode}</div>
+              <div>Address: {item.address}</div>
+              <div>Category: {item.category}</div>
+              <div>Latitude: {item.latitude}</div>
+              <div>Longitude: {item.longitude}</div>
+              <img 
+                src={item.image === null || item.image === "nan" ? errorImg : item.image} 
+                alt={item.title} 
+                style={{ maxWidth: "200px" }} 
+              />
+              <div>{item.content}</div>
+            </div>
+          ))
+        ) : (
+          "데이터가 없습니다."
+        )}
+      </div>
+      {selectedItem && (
+        <div>
+          <h2>선택된 위치 정보</h2>
+          <h3>{selectedItem.title}</h3>
+          <p>{selectedItem.address}</p>
         </div>
-        <div id="map" style={{
-          width: '100%',
-          height: '90vh',
-        }}></div>
-      </div>
-      <div style={{ flex: 1, overflowY: 'auto', maxHeight: '100vh' }}>
-        <PlaceDetail place={selectedPlace} />
-      </div>
+      )}
     </div>
   );
-}
+};
 
 export default KakaoMap;
