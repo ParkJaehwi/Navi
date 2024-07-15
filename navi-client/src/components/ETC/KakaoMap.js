@@ -3,8 +3,8 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import noneimg from "../../style/img/noneImg.png";
 import "../../style/ETC/KakaoMap.scss";
 import { FaLocationDot } from "react-icons/fa6";
-import { IoBookmark } from "react-icons/io5";
-import { IoBookmarkOutline } from "react-icons/io5";
+import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import axios from 'axios';
 
 const KakaoMap = ({ data, isDarkMode }) => {
   const [position, setPosition] = useState(null);
@@ -102,6 +102,33 @@ const KakaoMap = ({ data, isDarkMode }) => {
     setMapLevel(map.getLevel());
   };
 
+  const like = async (item) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/like', {
+        title: item.title,
+        cat: item.category,
+        addre: item.address,
+        content: item.content,
+        lat: item.latitude,
+        lon: item.longitude,
+        img: item.image
+      }, { withCredentials: true });
+
+      if (response.status === 201) {
+        alert('좋아요가 저장되었습니다.');
+      } else {
+        alert('좋아요 저장에 실패했습니다.');
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert('로그인이 필요합니다.');
+      } else {
+        alert('좋아요 저장 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
+
   return (
     <div className={`Map ${isDarkMode ? 'dark-mode' : ''}`}>
       {isLoading && (
@@ -116,8 +143,11 @@ const KakaoMap = ({ data, isDarkMode }) => {
               <img src={item.image} alt={item.title} className="item-image" />
               <div className="item-info">
                 <h3>{item.title}</h3>
-                <div className={`item-address ${isDarkMode ? 'dark-mode' : ''}`}><FaLocationDot/> {item.address}</div>
+                <div className={`item-address ${isDarkMode ? 'dark-mode' : ''}`}>
+                  <FaLocationDot/> {item.address}
+                </div>
                 <div className="item-content">{item.content}</div>
+                <button onClick={() => like(item)}>좋아요?</button>
               </div>
             </div>
           ))

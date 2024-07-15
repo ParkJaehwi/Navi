@@ -103,3 +103,12 @@
   margin-top: 40vh;
   font-size: 1.5vw;
 }
+.bookmark-icon {
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #007bff;
+  
+  &:hover {
+    color: #0056b3;
+  }
+}
