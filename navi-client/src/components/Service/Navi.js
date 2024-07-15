@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import KakaoMap from "../ETC/KakaoMap";
+import "../../style/Service/Navi.scss";
+import Swal from 'sweetalert2';
 
 function Navi({ isDarkMode }) {
   const [selectedCode, setSelectedCode] = useState("");
@@ -13,14 +15,14 @@ function Navi({ isDarkMode }) {
     { code: "5", name: "광주" },
     { code: "6", name: "부산" },
     { code: "7", name: "울산" },
-    { code: "8", name: "세종특별자치시" },
+    { code: "8", name: "세종" },
     { code: "31", name: "경기도" },
-    { code: "32", name: "강원특별자치도" },
+    { code: "32", name: "강원도" },
     { code: "33", name: "충청북도" },
     { code: "34", name: "충청남도" },
     { code: "35", name: "경상북도" },
     { code: "36", name: "경상남도" },
-    { code: "37", name: "전북특별자치도" },
+    { code: "37", name: "전라북도" },
     { code: "38", name: "전라남도" },
     { code: "39", name: "제주도" },
   ];
@@ -35,48 +37,59 @@ function Navi({ isDarkMode }) {
   const resultDisplay = Array.isArray(mostFrequentOption) ? `${mostFrequentOption.join(",")}` : `${mostFrequentOption}`;
 
   const handleSubmit = () => {
-    alert(`선택된 코드: ${selectedCode}\n선택된 카테고리: ${resultDisplay}`);
-    // search?areacode=1&category=A0101,A0102
     console.log(resultDisplay);
     console.log(typeof resultDisplay);
     let url = `http://localhost:5000/search?areacode=${selectedCode}&category=${resultDisplay}`;
     console.log(url);
+
+    // 로딩 팝업 표시
+    Swal.fire({
+      title: '데이터 생성 중...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     fetch(url)
       .then((response) => response.json())
-      .then((data) => setData(JSON.parse(data.result)))
       .then((data) => {
-        console.log(typeof data);
-        console.log(data);
+        setData(JSON.parse(data.result));
+        // 로딩 팝업 닫기
+        Swal.close();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // 에러 발생 시 로딩 팝업 닫기
+        Swal.close();
+        // 에러 메시지 표시
+        Swal.fire('오류', '데이터가 존재하지 않습니다.', 'error');
       });
-    console.log(typeof data);
-    console.log(data);
   };
 
-  const seeData = () => {
-    console.log(data);
-    console.log(typeof data);
-  };
-  
-  
   return (
-    <div style={{ textAlign: "center", margin: "20px" }}>
-      <h1>Navi</h1>
-      <KakaoMap data={data}/>
-
-      <div>
-        <h3>도시 선택</h3>
-        {cities.map((city) => (
-          <div key={city.code}>
-            <label>
-              <input type="radio" name="city" value={city.code} onChange={handleChange} />
-              {city.name}
-            </label>
-          </div>
-        ))}
-        <button onClick={handleSubmit}>제출</button>
-        <button onClick={seeData}>보기</button>
+    <div className="Navi">
+      <div className="locationContainer">
+        <h3 className={`selectLocation ${isDarkMode ? 'dark-mode' : ''}`}>지역 선택</h3>
+        <div className="cityList">
+          {cities.map((city) => (
+            <div key={city.code} className="cityItem">
+              <input 
+                type="radio" 
+                id={`city-${city.code}`} 
+                name="city" 
+                value={city.code} 
+                onChange={handleChange} 
+                className="Location_radio"
+              />
+              <label htmlFor={`city-${city.code}`} className="cityLabel">{city.name}</label>
+            </div>
+          ))}
+        </div>
+        <button onClick={handleSubmit} className="submitButton">검색</button>
       </div>
-      <div>
+      <KakaoMap data={data} isDarkMode={isDarkMode}/>
+      <div className="dataDisplay">
         {console.log(data)}
       </div>
     </div>

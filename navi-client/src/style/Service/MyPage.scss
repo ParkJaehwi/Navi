@@ -15,6 +15,7 @@
     &.dark-mode {
       background-color: #202020;
       color: #fcfcfc;
+      border: 0.03vw solid #7b7b7b;
     }
     .mypageLogo{
       margin-top: 10vh;
@@ -56,6 +57,13 @@
       display: inline-block;
       background: #ffffff;
       outline: none;
+      &.dark-mode{
+        background-color: #202020;
+        color: white;
+        &:hover{
+          background-color: #202020;
+        }
+      }
       &:hover{
         background-color: white;
       }
@@ -96,6 +104,13 @@
       display: inline-block;
       background: #ffffff;
       outline: none;
+      &.dark-mode{
+        background-color: #202020;
+        color: white;
+        &:hover{
+          background-color: #202020;
+        }
+      }
       &:hover{
         background-color: white;
       }

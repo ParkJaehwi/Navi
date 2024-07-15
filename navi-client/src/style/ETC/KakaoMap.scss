@@ -1,0 +1,105 @@
+.Map {
+  display: flex;
+  
+  &.dark-mode {
+    background-color: #333;
+    color: #fff;
+    
+    .data-list {
+      background-color: #222;
+    }
+    
+    .data-item {
+      border-color: #444;
+      
+    }
+  }
+}
+
+.data-list {
+  max-height: 88vh;
+  width: 39vw;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  padding: 1vw;
+}
+
+.data-item {
+  cursor: pointer;
+  border-bottom: 0.1vw solid #ccc;
+  padding: 1vw 0;
+  margin-bottom: 1vw;
+  display: flex;
+  flex-direction: row;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .item-image {
+    width: 35%;
+    height: auto;
+    object-fit: cover;
+    margin-right: 1vw;
+    border-radius: 0.5vw;
+  }
+  
+  .item-info {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+
+    
+    h3 {
+      font-size: 1.1vw;
+      margin-bottom: 0.5vw;
+    }
+    
+    .item-address {
+      font-size: 0.85vw;
+      margin-bottom: 0.5vw;
+      color: #666;
+      &.dark-mode{
+        color: #ccc;
+      }
+    }
+    
+    .item-content {
+      font-size: 0.9vw;
+      width: 24vw;
+    }
+  }
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(167, 167, 167, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 0.5vw solid #f3f3f3;
+  border-top: 0.5vw solid #3498db;
+  border-radius: 50%;
+  width: 5vw;
+  height: 5vw;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.noneSearch {
+  text-align: center;
+  margin-top: 40vh;
+  font-size: 1.5vw;
+}

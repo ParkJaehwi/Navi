@@ -1,0 +1,104 @@
+.Navi {
+  display: flex;
+
+  .locationContainer {
+    width: 9.17vw;
+    text-align: center;
+
+    .selectLocation {
+      font-size: 1.2vw;
+      color: #202020;
+
+      &.dark-mode {
+        color: #FCFCFC;
+      }
+    }
+
+    .cityList {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cityItem {
+      margin: 0.3vh 0;
+    }
+
+    .Location_radio {
+      display: none;
+
+      & + .cityLabel {
+        display: inline-block;
+        width: 6vw;
+        padding: 0.8vh 0;
+        background-color: #FFFFFF;
+        border: 0.06vw solid #ccc;
+        border-radius: 0.3vw;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.8vw;
+
+        &:hover {
+          background-color: #e0e0e0;
+        }
+      }
+
+      &:checked + .cityLabel {
+        background-color: #758694;
+        color: white;
+        border-color: #758694;
+      }
+    }
+
+    .submitButton {
+      width: 6.1vw;
+      padding: 0.5vw 0;
+      margin-top: 2vh;
+      background-color: #737cca;
+      color: white;
+      border: none;
+      border-radius: 0.3vw;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 0.8vw;
+
+      &:hover {
+        background-color: #141d69d1;
+      }
+    }
+  }
+}
+
+// 다크 모드
+.dark-mode {
+  .locationContainer {
+    .selectLocation {
+      color: #FCFCFC;
+    }
+
+    .Location_radio {
+      & + .cityLabel {
+        background-color: #333;
+        color: #f0f0f0;
+        border-color: #555;
+
+        &:hover {
+          background-color: #444;
+        }
+      }
+
+      &:checked + .cityLabel {
+        background-color: #758694;
+        border-color: #758694;
+      }
+    }
+
+    .submitButton {
+      background-color: #737cca;
+
+      &:hover {
+        background-color: #2532a6d1;
+      }
+    }
+  }
+}
