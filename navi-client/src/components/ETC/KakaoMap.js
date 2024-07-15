@@ -1,44 +1,69 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import noneimg from "../../style/img/noneImg.png";
+import "../../style/ETC/KakaoMap.scss";
+import { FaLocationDot } from "react-icons/fa6";
+import { IoBookmark } from "react-icons/io5";
+import { IoBookmarkOutline } from "react-icons/io5";
 
-const KakaoMap = ({ data }) => {
+const KakaoMap = ({ data, isDarkMode }) => {
   const [position, setPosition] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isMapReady, setIsMapReady] = useState(false);
-  
-  // errorImg를 상단에서 선언 및 초기화
+  const [showCurrentLocationMarker, setShowCurrentLocationMarker] = useState(false);
+  const [mapLevel, setMapLevel] = useState(3);
+  const [isLoading, setIsLoading] = useState(true);
+  const mapInstanceRef = useRef(null);
+
   const errorImg = noneimg;
 
   useEffect(() => {
-    // 현재 위치 가져오기
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-          setIsMapReady(true);
-        },
-        (error) => {
-          console.error("Geolocation error:", error);
-          // 기본 위치 설정 (예: 서울시청)
-          setPosition({ lat: 37.5665, lng: 126.9780 });
-          setIsMapReady(true);
-        }
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser.');
-      // 기본 위치 설정 (예: 서울시청)
-      setPosition({ lat: 37.5665, lng: 126.9780 });
-      setIsMapReady(true);
-    }
+    const loadKakaoMap = () => {
+      if (window.kakao && window.kakao.maps) {
+        initializeMap();
+      } else {
+        const script = document.createElement('script');
+        script.onload = initializeMap;
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services`;
+        document.head.appendChild(script);
+      }
+    };
+
+    const initializeMap = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setPosition({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            });
+            setShowCurrentLocationMarker(false);
+            setIsMapReady(true);
+            setIsLoading(false);
+          },
+          (error) => {
+            console.error("Geolocation error:", error);
+            setPosition({ lat: 37.5665, lng: 126.9780 });
+            setShowCurrentLocationMarker(false);
+            setIsMapReady(true);
+            setIsLoading(false);
+          }
+        );
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+        setPosition({ lat: 37.5665, lng: 126.9780 });
+        setShowCurrentLocationMarker(false);
+        setIsMapReady(true);
+        setIsLoading(false);
+      }
+    };
+
+    loadKakaoMap();
   }, []);
 
   const dataItems = data && data.length > 0 ? data.map((item, index) => ({
     key: index,
-    title: `${index + 1}. ${item.title}`,
+    title: item.title,
     areacode: item.areacode,
     address: item.address,
     category: item.category,
@@ -51,45 +76,73 @@ const KakaoMap = ({ data }) => {
   useEffect(() => {
     if (data && data.length > 0) {
       const firstItem = dataItems[0];
-      const lat = firstItem.latitude;
-      const lng = firstItem.longitude;
+      const lat = parseFloat(firstItem.latitude);
+      const lng = parseFloat(firstItem.longitude);
       if (!isNaN(lat) && !isNaN(lng)) {
         setPosition({ lat, lng });
-        console.log("Updated position from data:", { lat, lng });
-      } else {
-        console.error("Invalid latitude or longitude in first data item:", data[0]);
+        setShowCurrentLocationMarker(true);
       }
     }
   }, [data]);
 
-  const handleSetPosition = (item) => {
-    const lat = item.latitude;
-    const lng = item.longitude;
+  const handleSetPosition = useCallback((item) => {
+    const lat = parseFloat(item.latitude);
+    const lng = parseFloat(item.longitude);
     if (!isNaN(lat) && !isNaN(lng)) {
       setPosition({ lat, lng });
       setSelectedItem(item);
-      console.log("Set position to:", { lat, lng });
-    } else {
-      console.error("Invalid latitude or longitude in item:", item);
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.setLevel(4);
+      }
+      setMapLevel(4);
     }
+  }, []);
+
+  const handleZoomChanged = (map) => {
+    setMapLevel(map.getLevel());
   };
 
   return (
-    <div>
+    <div className={`Map ${isDarkMode ? 'dark-mode' : ''}`}>
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
+      <div className="data-list">
+        {dataItems.length > 0 ? (
+          dataItems.map((item) => (
+            <div key={item.key} className="data-item" onClick={() => handleSetPosition(item)}>
+              <img src={item.image} alt={item.title} className="item-image" />
+              <div className="item-info">
+                <h3>{item.title}</h3>
+                <div className={`item-address ${isDarkMode ? 'dark-mode' : ''}`}><FaLocationDot/> {item.address}</div>
+                <div className="item-content">{item.content}</div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className='noneSearch'>지역을 선택하고 검색해주세요.</p>
+        )}
+      </div>
       {isMapReady && position && (
         <Map
           center={position}
-          style={{ width: '100%', height: '400px' }}
-          level={3}
+          style={{ width: '51.82vw', height: '92vh' }}
+          level={mapLevel}
+          onCreate={(map) => mapInstanceRef.current = map}
+          onZoomChanged={handleZoomChanged}
         >
-          <MapMarker position={position} />
-          {data && data.map((item, index) => {
+          {showCurrentLocationMarker && (
+            <MapMarker position={position} />
+          )}
+          {dataItems.map((item) => {
             const lat = parseFloat(item.latitude);
             const lng = parseFloat(item.longitude);
             if (!isNaN(lat) && !isNaN(lng)) {
               return (
                 <MapMarker 
-                  key={index}
+                  key={item.key}
                   position={{ lat, lng }}
                   onClick={() => handleSetPosition(item)}
                 />
@@ -98,35 +151,6 @@ const KakaoMap = ({ data }) => {
             return null;
           })}
         </Map>
-      )}
-      <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-        {data && data.length > 0 ? (
-          data.map((item, index) => (
-            <div key={index} onClick={() => handleSetPosition(item)} style={{cursor: 'pointer'}}>
-              <h3>{index + 1}. {item.title}</h3>
-              <div>Areacode: {item.areacode}</div>
-              <div>Address: {item.address}</div>
-              <div>Category: {item.category}</div>
-              <div>Latitude: {item.latitude}</div>
-              <div>Longitude: {item.longitude}</div>
-              <img 
-                src={item.image === null || item.image === "nan" ? errorImg : item.image} 
-                alt={item.title} 
-                style={{ maxWidth: "200px" }} 
-              />
-              <div>{item.content}</div>
-            </div>
-          ))
-        ) : (
-          "데이터가 없습니다."
-        )}
-      </div>
-      {selectedItem && (
-        <div>
-          <h2>선택된 위치 정보</h2>
-          <h3>{selectedItem.title}</h3>
-          <p>{selectedItem.address}</p>
-        </div>
       )}
     </div>
   );

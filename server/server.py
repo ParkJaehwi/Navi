@@ -50,7 +50,7 @@ def filter_data(areacode, categories):
 def df_to_text(filtered_df):
     text = ""
     for index, row in filtered_df.iterrows():
-        text += f"title: {row['title']}, areacode: {row['areacode']}, address: {row['addr1']}, category: {row['cat2']}, latitude: {row['mapx']}, longitude: {row['mapy']}, image: {row['firstimage']}\n"
+        text += f"title: {row['title']}, areacode: {row['areacode']}, address: {row['addr1']}, category: {row['cat2']}, latitude: {row['mapy']}, longitude: {row['mapx']}, image: {row['firstimage']}\n"
     print('Df > Text 변환 완료')
     return text
 
