@@ -3,8 +3,8 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import noneimg from "../../style/img/noneImg.png";
 import "../../style/ETC/KakaoMap.scss";
 import { FaLocationDot } from "react-icons/fa6";
-import { IoBookmark } from "react-icons/io5";
-import { IoBookmarkOutline } from "react-icons/io5";
+import { BsBookmark,BsFillBookmarkCheckFill } from "react-icons/bs";
+import axios from 'axios';
 
 const KakaoMap = ({ data, isDarkMode }) => {
   const [position, setPosition] = useState(null);
@@ -13,6 +13,7 @@ const KakaoMap = ({ data, isDarkMode }) => {
   const [showCurrentLocationMarker, setShowCurrentLocationMarker] = useState(false);
   const [mapLevel, setMapLevel] = useState(3);
   const [isLoading, setIsLoading] = useState(true);
+  const [likedItems, setLikedItems] = useState({});
   const mapInstanceRef = useRef(null);
 
   const errorImg = noneimg;
@@ -59,7 +60,23 @@ const KakaoMap = ({ data, isDarkMode }) => {
     };
 
     loadKakaoMap();
+    fetchLikedItems();
   }, []);
+
+  const fetchLikedItems = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/liked-items', { withCredentials: true });
+      if (response.status === 200) {
+        const likedItemsMap = {};
+        response.data.forEach(item => {
+          likedItemsMap[item.title] = true;
+        });
+        setLikedItems(likedItemsMap);
+      }
+    } catch (error) {
+      console.error('좋아요 정보를 가져오는데 실패했습니다:', error);
+    }
+  };
 
   const dataItems = data && data.length > 0 ? data.map((item, index) => ({
     key: index,
@@ -102,6 +119,35 @@ const KakaoMap = ({ data, isDarkMode }) => {
     setMapLevel(map.getLevel());
   };
 
+  const toggleLike = async (item) => {
+    try {
+      const isLiked = likedItems[item.title];
+      const url = isLiked ? 'http://localhost:5000/api/unlike' : 'http://localhost:5000/api/like';
+      const response = await axios.post(url, {
+        title: item.title,
+        cat: item.category,
+        addre: item.address,
+        content: item.content,
+        lat: item.latitude,
+        lon: item.longitude,
+        img: item.image
+      }, { withCredentials: true });
+
+      if (response.status === 200 || response.status === 201) {
+        setLikedItems(prev => ({
+          ...prev,
+          [item.title]: !isLiked
+        }));
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert('로그인이 필요합니다.');
+      } else {
+        alert('좋아요 처리 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
   return (
     <div className={`Map ${isDarkMode ? 'dark-mode' : ''}`}>
       {isLoading && (
@@ -116,8 +162,18 @@ const KakaoMap = ({ data, isDarkMode }) => {
               <img src={item.image} alt={item.title} className="item-image" />
               <div className="item-info">
                 <h3>{item.title}</h3>
-                <div className={`item-address ${isDarkMode ? 'dark-mode' : ''}`}><FaLocationDot/> {item.address}</div>
+                <div className={`item-address ${isDarkMode ? 'dark-mode' : ''}`}>
+                  <FaLocationDot/> {item.address}
+                </div>
                 <div className="item-content">{item.content}</div>
+                <button onClick={(e) => {
+                  e.stopPropagation();
+                  toggleLike(item);
+                }}
+                className={`LikeBtn ${isDarkMode ? 'dark-mode' : ''}`}
+                >
+                  {likedItems[item.title] ? <BsFillBookmarkCheckFill /> : <BsBookmark />}
+                </button>
               </div>
             </div>
           ))

@@ -25,7 +25,6 @@
 }
 
 .data-item {
-  cursor: pointer;
   border-bottom: 0.1vw solid #ccc;
   padding: 1vw 0;
   margin-bottom: 1vw;
@@ -102,4 +101,21 @@
   text-align: center;
   margin-top: 40vh;
   font-size: 1.5vw;
+}
+
+.LikeBtn{
+  font-size: 1.5vw;
+  width: 1.7vw;
+  padding: 0;
+  height: 3.2vh;
+  cursor: pointer;
+  border: none;
+  margin-top: 3vh;
+  margin-left: 20vw;
+  background-color: #F5F5F5;
+  color: #333;
+  &.dark-mode{
+    background-color: #222222;
+    color: #f3f3f3;
+  }
 }
