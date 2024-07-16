@@ -246,22 +246,35 @@ def reset_password():
     cursor.close()
     return jsonify({"message": "비밀번호가 성공적으로 변경되었습니다."}), 200
 
+@app.route('/api/liked-items', methods=['GET'])
+def get_liked_items():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"message": "로그인이 필요합니다."}), 401
+    
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT title FROM user_like WHERE username = (SELECT username FROM user WHERE user_id = %s)"
+    cursor.execute(query, (user_id,))
+    liked_items = cursor.fetchall()
+    cursor.close()
+    
+    return jsonify(liked_items), 200
+
 @app.route('/api/like', methods=['POST'])
 def like():
     data = request.json
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({"message": "로그인이 필요합니다."}), 401
-
+    
     cursor = db.cursor(dictionary=True)
     query = "SELECT username FROM user WHERE user_id = %s"
     cursor.execute(query, (user_id,))
     user = cursor.fetchone()
-
     if not user:
         cursor.close()
         return jsonify({"message": "유효한 사용자가 아닙니다."}), 404
-
+    
     username = user['username']
     title = data.get('title')
     cat = data.get('cat')
@@ -270,16 +283,51 @@ def like():
     lat = data.get('lat')
     lon = data.get('lon')
     img = data.get('img')
-
-    query = """
+    
+    # 이미 좋아요한 항목인지 확인
+    check_query = "SELECT * FROM user_like WHERE username = %s AND title = %s"
+    cursor.execute(check_query, (username, title))
+    existing_like = cursor.fetchone()
+    
+    if existing_like:
+        cursor.close()
+        return jsonify({"message": "이미 좋아요한 항목입니다."}), 409
+    
+    insert_query = """
     INSERT INTO user_like (username, title, cat, addre, content, lat, lon, img)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = (username, title, cat, addre, content, lat, lon, img)
-    cursor.execute(query, values)
+    cursor.execute(insert_query, values)
     db.commit()
     cursor.close()
+    
     return jsonify({"message": "좋아요가 저장되었습니다."}), 201
+
+@app.route('/api/unlike', methods=['POST'])
+def unlike():
+    data = request.json
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"message": "로그인이 필요합니다."}), 401
+    
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT username FROM user WHERE user_id = %s"
+    cursor.execute(query, (user_id,))
+    user = cursor.fetchone()
+    if not user:
+        cursor.close()
+        return jsonify({"message": "유효한 사용자가 아닙니다."}), 404
+    
+    username = user['username']
+    title = data.get('title')
+    
+    delete_query = "DELETE FROM user_like WHERE username = %s AND title = %s"
+    cursor.execute(delete_query, (username, title))
+    db.commit()
+    cursor.close()
+    
+    return jsonify({"message": "좋아요가 취소되었습니다."}), 200
 
 @app.route('/api/user', methods=['GET'])
 def get_user_data():

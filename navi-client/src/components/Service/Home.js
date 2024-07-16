@@ -5,7 +5,6 @@ import "../../style/Service/Home.scss";
 import InfiniteSlider from "../ETC/InfiniteSlider";
 import mainImg from "../../style/img/mainImg.jpg";
 import maindark from "../../style/img/maindark.jpg";
-import gif from "../../style/img/moveImg.gif";
 
 function Home({ isDarkMode }) {
   const navigate = useNavigate();
@@ -24,8 +23,6 @@ function Home({ isDarkMode }) {
       </div>
       <InfiniteSlider isDarkMode={isDarkMode}/>
 
-      {/* 실행부분 영상 녹화 후 넣기 */}
-      <img src={gif} style={{width:'40vw', height:'40vh', margin:'7vw', marginLeft: '30vw', borderRadius:'1vw'}}/>
       
       <Footer isDarkMode={isDarkMode}/>
     </div>

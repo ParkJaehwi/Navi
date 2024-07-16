@@ -18,7 +18,7 @@ function Footer({isDarkMode}) {
       <p className="Copyright">Copyright © Navi. AllRight</p>
       <div className="footerLink">
         <a href="https://github.com/ParkJaehwi/Navi"><button className={`footerBtn ${isDarkMode ? 'dark-mode' : ''}`}><FaGithub style={{marginTop:"1vh"}}/></button></a>
-        <a href="https://github.com/ParkJaehwi/Navi"><button className={`footerBtn ${isDarkMode ? 'dark-mode' : ''}`}><FaYoutube style={{marginTop:"1vh"}}/></button></a>
+        <a href="https://youtu.be/R992GeG4idk"><button className={`footerBtn ${isDarkMode ? 'dark-mode' : ''}`}><FaYoutube style={{marginTop:"1vh"}}/></button></a>
       </div>
     </div>
   )
