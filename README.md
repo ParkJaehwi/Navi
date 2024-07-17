@@ -1,6 +1,6 @@
 <img width=100% src="https://github.com/user-attachments/assets/56738c49-a28e-49a7-b501-88c1d49c9779">
 
-# 나만의 여행비서 : NAVI
+# 🦋 나만의 여행비서 : NAVI
 
 ### 📖 프로젝트 개요
 LLM을 활용한 사용자 맞춤형 여행지 추천시스템<br/>
@@ -16,14 +16,14 @@ LLM을 활용한 사용자 맞춤형 여행지 추천시스템<br/>
 
 ## 📝 프로젝트 설명
 
-### 💼 REWARD5의 기능
+### 💼 NAVI의 기능
 1. 회원가입을 통해 로그인을 할 수 있으며, 비회원으로도 이용 가능
 2. 선호도 조사를 할 수 있는 간단한 문제를 진행하거나 여행지 페이지를 통해 카테고리 선택 가능
 3. 선호도 조사를 끝내거나 카테고리를 선택하고 지역을 선택하면 사용자 맞춤형 관광지를 추천해주고 상세정보와 위치정보 확인 가능
 4. 로그인을 했으면 스크랩 버튼을 통한 여행지 저장 가능
 5. 마이페이지에서 계정을 관리할 수 있으며, 저장된 여행지 정보를 카테고리별로 확인 가능
 6. 다크모드를 구현하여 사용자가 원하는 테마를 사용 가능
-<br/><br/>
+<br/><br/><br/>
 
 ### 🗺 기술 설계도
 <img width=100% src="https://github.com/user-attachments/assets/e23c91cb-3ab9-4299-a379-7e74b316db4b"><br/>
@@ -43,52 +43,90 @@ LLM을 활용한 사용자 맞춤형 여행지 추천시스템<br/>
 3. 쿼리에 따른 MySQL에서의 작업 후 서버에서 클라이언트로 결과 전송
 <br/><br/><br/>
 
+### 📟 DB 설계도
+<img width=100% src="https://github.com/user-attachments/assets/4d90cc4e-feb9-4285-b862-cc73abccb822"><br/><br/><br/>
+
 
 ### 💻 기술 스택
 - **FrameWork:** &nbsp;&nbsp;![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB ) ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
 - **Style:** &nbsp;&nbsp;![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
 - **Language:** &nbsp;&nbsp;![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-- **Database** &nbsp;&nbsp;![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+- **Database:** &nbsp;&nbsp;![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
 - **Tools:** &nbsp;&nbsp;![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 <br/><br/>
 
+### 🛠️ 기능에 대한 사용 기술
+- Flask 서버와 React 클라이언트를 사용하여 구현
+- Gemini API를 사용하여 LLM모델 선택 후 LangChain 기술을 사용하여 체인으로 연결된 응답 생성과정 구현
+- Pandas를 통해 관광정보 API의 csv파일을 전처리
+- RAG기술을 통해 전처리된 데이터를 학습시켜 정확한 답변 생성
+- 답변을 서버에서 클라이언트로 전달하여 여행지 추천 화면 구현
+- 답변 데이터의  위도,경도값을 통해 클라이언트에서 KakaoMap API를 통한 위치정보 구현
+- MySQL 를 사용하였고 외래키를 통한 연결테이블 구현
+- 회원 기능과 여행지 스크랩 기능을 DB를 통해 구현
+- 자연스러운 UI 구현 및 다크모드 구현<br/><br/><br/>
+
 
 ### ✨ 주요 기능 및 이미지
-📌 Home<br/>
-<img width=100% src="https://github.com/hkyuuu00/dev-mode/assets/155419559/4899a646-3abc-4837-927d-1002c53329a8"><br/><br/>
-- **메뉴바:** 로고와 각종 기능들을 이용할 수 있는 메뉴 바 구현<br/>
-- **광고:** 사용자에게 어떻게 사용하는지와 사용하고 싶도록 디자인 구현<br/><br/><br/>
+📌 시작 페이지<br/>
+<img width=100% src="https://github.com/user-attachments/assets/742f0cee-4ce8-4d3d-ae45-637bbb50a5b6"><br/><br/>
+- **소개:** Navi 서비스에 대한 소개 화면<br/>
+- **시작하기:** 시작하기 버튼을 통해 사용자 맞춤형 데이터를 얻기위한 간단한 선호도 조사<br/><br/><br/>
 
-📌 Account<br/>
-<img width=100% src="https://github.com/hkyuuu00/dev-mode/assets/155419559/2da2bd54-a770-4bd0-a697-6817690276a2"><br/><br/>
-- **회원가입:** ID를 입력하여 회원가입을 진행, 회원가입 시 5000포인트를 적립되며 중복 ID 불가<br/>
-- **추천인 등록:** 추천인을 등록할 수 있으며 추천을 한 사람에게는 500포인트, 받은 사람에게는 1000포인트를 적립, 추천은 계정 당 1회만 가능<br/>
-- **회원탈퇴:** ID를 입력하여 회원탈퇴를 진행, 회원탈퇴 시 적립 포인트 모두 삭제<br/><br/><br/>
+📌 헤더 바<br/>
+<img width=100% src="https://github.com/user-attachments/assets/12f1b728-f43e-4014-b32b-99925ef33e75"><br/><br/>
+- **로고:** Navi 서비스의 로고, 시작 페이지로 이동 가능<br/>
+- **페이지 버튼:** 여행지, 로그인 버튼과 로그인을 하면 로그아웃, 마이페이지 버튼을 통해 각각 페이지로 이동<br/>
+- **다크모드:** 버튼을 누르면 모든 페이지가 위 이미지처럼 어두운 테마로 변경하도록 설정정<br/><br/><br/>
 
-📌 Payment<br/>
-<img width=100% src="https://github.com/hkyuuu00/dev-mode/assets/155419559/244033d6-f968-43ae-af4b-cff67ab39ffd"><br/><br/>
-- **결제:** 본인의 ID를 입력하고 결제할 가격과 사용할 포인트 입력 (사용하지 않을 시에는 0 입력)<br/>
-- **포인트 적립:** 사용자가 결제 진행 후 결제한 가격의 1% 포인트 적립<br/>
-- **관리자 수수료:** 결제한 가격의 2% 수수료를 징수<br/><br/><br/>
 
-📌 Send<br/>
-<img width=100% src="https://github.com/hkyuuu00/dev-mode/assets/155419559/fe2fd520-fee9-4f44-8473-cdeac31fc851"><br/><br/>
-- **포인트 선물:** 보내는 유저와 받는 유저의 ID를 입력 후 선물 포인트 입력 후 버튼을 누르면 5% 수수료를 빼고 받는 유저에게 지급<br/>
-- **관리자 수수료:** 선물 포인트의 5% 수수료를 징수<br/><br/><br/>
+📌 선호도 조사 페이지<br/>
+<img width=100% src="https://github.com/user-attachments/assets/974b8a85-b6a0-4c49-bce0-d8f04d342894"><br/><br/>
+- **선호도 조사:** 총 5개의 문항으로 이루어져 있으며, 사용자의 여행 취향과 선호도를 분석<br/>
+- **결과보기:** 마지막 문항의 결과보기 버튼을 통해 여행지 추천 페이지로 해당 정보 전송 후 이동<br/><br/><br/>
 
-📌 Event<br/>
-<img width=100% src="https://github.com/hkyuuu00/dev-mode/assets/155419559/a1237384-a054-4589-a2ba-5a715ca32427"><br/><br/>
-- **로또 참여:** 유저 ID를 입력하여 참여, 입력한 유저는 100포인트를 차감하고 Lotto 총 금액에 추가, 로또 당첨 시 Lotto 총 금액에 대한 포인트를 받음<br/>
-- **회원정보 및 Lotto 금액:** 유저들이 서비스를 이용하면서 자신의 포인트와 로또 금액을 볼 수 있도록 구현<br/><br/><br/>
+📌 여행지 카테고리 페이지<br/>
+<img width=100% src="https://github.com/user-attachments/assets/63309f54-7450-4ce1-8842-7084a24d7b5e"><br/><br/>
+- **여행지 카테고리:** 총 10개의 카테고리가 있으며, 선택하여 여행지 추천 페이지로 이동<br/><br/><br/>
 
-📌 일별 지출 확인<br/>
-<img width=100% src="https://github.com/hkyuuu00/dev-mode/assets/155419559/074ea8f0-270b-4e14-a45d-021895b1e2b0"><br/><br/>
-- **비밀번호 입력:** 관리자 페이지이기에 다른 유저가 들어오지 못하도록 패스워드 입력 후 접근 가능<br/>
-- **수수료 조회:** 관리자가 징수한 수수료를 확인할 수 있도록 구현<br/>
-- **로또 이벤트 참여자 조회:** 로또의 참여자 명단을 기록하도록 구현<br/>
-- **로또 추첨 버튼:** 로또를 추첨하여 당첨된 유저에게 Lotto 총 금액에 모인 포인트 지급, 로또는 랜덤으로 당첨<br/><br/><br/><br/><br/>
+📌 여행지 추천 페이지<br/>
+<img width=100% src="https://github.com/user-attachments/assets/169e7c61-6096-4d81-8227-54597f55c2b0"><br/><br/>
+- **지역 선택:** 지역을 선택하여 추천받고 싶은 여행지역을 선택<br/>
+- **검색:** 검색 버튼을 통해 전달받은 카테고리와 지역을 바탕으로 LLM을 통해 응답<br/>
+- **상세정보:** 이미지와 이름, 주소, 간단한 설명을 보여주며, 클릭 시 지도에 위치정보 표시<br/>
+- **스크랩 버튼:** 스크랩 버튼을 통해 저장하고 싶은 여행지를 나의 여행지에 저장 가능<br/>
+- **지도:** 초기 설정은 GPS를 통해 사용자의 위치를 보여주고 여행 데이터를 받아오면 해당 여행지의 위치정보 제공<br/><br/><br/>
 
-### 🎧 <a href="https://youtu.be/RS7BLJ2unoM">시연영상</a>
+📌 로그인<br/>
+<img width=100% src="https://github.com/user-attachments/assets/f5c2414a-28c3-483d-b007-ebd1cae381b2"><br/><br/>
+- **로그인:** 회원가입한 아이디와 비밀번호를 사용해 로그인, 로그인을 하면 세션을 발급받아 마이페이지와 나의 여행지 페이지에 접근 가능<br/>
+- **아이디 찾기:** 이메일을 입력 받아 해당 유저의 아이디를 제공<br/>
+- **비밀번호 찾기:** 아이디와 이메일을 입력받아 유저를 확인한 후 해시값으로 설정된 비밀번호를 재설정 하도록 구현<br/><br/><br/>
+
+📌 회원가입<br/>
+<img width=100% src="https://github.com/user-attachments/assets/6fe03cfb-efdc-4335-b465-dd05f3adde4e"><br/><br/>
+- **회원가입:** 사용자의 정보를 입력받아 회원가입 진행<br/><br/><br/>
+
+📌 마이페이지<br/>
+<img width=100% src="https://github.com/user-attachments/assets/db82fa6e-6f89-4cf2-9f2e-57fee4e88310"><br/><br/>
+- **나의 정보:** 나의 아이디와 이메일을 보여주는 프로필 구현<br/>
+- **저장된 여행지 버튼:** 여행지 추천 페이지에서 저장한 여행지들을 확인할 수 있는 페이지로 이동<br/>
+- **비밀번호 재설정:** 사용자의 정보를 가지고 비밀번호를 재설정 하도록 구현<br/><br/><br/>
+
+📌 나의 여행지 페이지<br/>
+<img width=100% src="https://github.com/user-attachments/assets/f76d6383-d858-4888-bb43-8a0d738ef1c6"><br/><br/>
+- **카테고리 선택:** 여행지별 카테고리 메뉴를 선택하여 저장한 여행지를 카테고리별로 확인<br/>
+- **여행지 정보:** 여행지의 이미지와 이름, 주소를 간단하게 보여주도록 했으며 클릭 시 상세정보 확인<br/><br/><br/>
+
+📌 스크랩 상세정보<br/>
+<img width=100% src="https://github.com/user-attachments/assets/8a04265f-4937-49c2-95a1-b2c076b389b1"><br/><br/>
+- **지도:** 해당 여행지의 위치정보를 지도로 표시<br/>
+- **상세 정보:** 이름, 이미지, 주소, 설명을 확인하도록 구현<br/>
+- **스크랩 취소 버튼:** 우측 하단의 버튼을 통해 저장된 여행지를 삭제하도록 구현<br/><br/><br/><br/><br/>
+
+
+
+### 🎧 <a href="https://youtu.be/R992GeG4idk">시연영상</a>
 </br></br></br></br>
 
 ### 🛠 문제 해결 과정
@@ -135,66 +173,31 @@ LLM을 활용한 사용자 맞춤형 여행지 추천시스템<br/>
 ## ⚙️ 프로젝트 설치 및 실행 방법
 
 ### 📝 Prerequisites
-- Oracle VM VirtualBox 6.1
-- Ubuntu 22.04.x
-- cURL
-- Docker Community Edition CE 23.0.6
-- Docker Compose 1.27.4 이상
-- Go 1.16.7
-- Git 2.9.x 이상
-- Python 2.7.17
-- Node.js 12.13.1
-- npm 5.6.0
-- VSCode v1.28
+- Python 3.11.4
+- pip 23.1.2
+- Node.js 20.11.0
+- npm 10.2.4
+- MySQL 8.0.36
 
 
 ### 📦 설치 방법
-⚡ 우분투 환경의 IP를 확인하여 코드 수정 후 진행<br/><br/>
-우분투 환경에서 서버 설치<br/>
-
+`git clone https://github.com/hkyuuu00/Navi.git`<br/><br/>
+.env 파일 생성 후 API 키 수정
 ```sh
-// 하이퍼레저 패브릭 샘플 및 바이너리 다운로드
-cd ~/go/src
-curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.2.2 1.4.9
+GEMINI_API_KEY=(GeminiAPIKEY)
 
-// 프로젝트 다운
-cd $GOPATH/src/
-rm -rf dev-mode
-git clone https://github.com/hkyuuu00/dev-mode.git
-cd $GOPATH/src/dev-mode/basic-network
-cp -r $GOPATH/src/fabric-samples/bin/ ./
+REACT_APP_JAVASCRIPT_KEY=(KakaoMapAPIKEY)
 
-// 체인코드 인증서 발급 및 설치, 서버 실행
-cd $GOPATH/src/dev-mode
-./network.sh clean
-./network.sh dev
-./network.sh installCC dev abstore
-./network.sh startSDK
+DB_HOST=(host)
+DB_USER=(user)
+DB_PASSWORD=(password)
+DB_DATABASE=(db)
 ```
-
-윈도우 환경에서 클라이언트 설치<br/>
-
+<br/><br/>
+venv 설치 및 실행
 ```sh
-git clone https://github.com/hkyuuu00/reward5-api-server.git
-cd reward5-api-server
-npm install
-npm start
-```
-
-## 🏰Client, Server repository
-📱 <a href="https://github.com/hkyuuu00/reward5-api-server">Client</a></br>
-💻 <a href="https://github.com/hkyuuu00/dev-mode">Server</a></br>
-
-//venv 설치 및 실행(가상환경 설정)
-
-
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-
-에러시
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-.\venv\Scripts\Activate.ps1
-
 venv\Scripts\activate
 pip install Flask
 pip install flask-cors
@@ -202,19 +205,17 @@ pip install python-dotenv
 pip install mysql-connector-python
 pip install pandas
 pip install langchain langchain_google_genai
-
-
-// 서버 실행
-
+```
+<br/><br/>
+flask 서버 실행
+```sh
 cd server
 python server.py
-
----
-
-// 클라이언트 실행
-
+```
+<br/><br/>
+클라이언트 패키지 다운 및 실행
+```sh
 cd navi-client
 npm i
 npm start
-
----
+```
