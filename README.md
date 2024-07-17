@@ -73,13 +73,6 @@ LLM을 활용한 사용자 맞춤형 여행지 추천시스템<br/>
 - **소개:** Navi 서비스에 대한 소개 화면<br/>
 - **시작하기:** 시작하기 버튼을 통해 사용자 맞춤형 데이터를 얻기위한 간단한 선호도 조사<br/><br/><br/>
 
-📌 헤더 바<br/>
-<img width=100% src="https://github.com/user-attachments/assets/12f1b728-f43e-4014-b32b-99925ef33e75"><br/><br/>
-- **로고:** Navi 서비스의 로고, 시작 페이지로 이동 가능<br/>
-- **페이지 버튼:** 여행지, 로그인 버튼과 로그인을 하면 로그아웃, 마이페이지 버튼을 통해 각각 페이지로 이동<br/>
-- **다크모드:** 버튼을 누르면 모든 페이지가 위 이미지처럼 어두운 테마로 변경하도록 설정정<br/><br/><br/>
-
-
 📌 선호도 조사 페이지<br/>
 <img width=100% src="https://github.com/user-attachments/assets/974b8a85-b6a0-4c49-bce0-d8f04d342894"><br/><br/>
 - **선호도 조사:** 총 5개의 문항으로 이루어져 있으며, 사용자의 여행 취향과 선호도를 분석<br/>
@@ -130,43 +123,63 @@ LLM을 활용한 사용자 맞춤형 여행지 추천시스템<br/>
 </br></br></br></br>
 
 ### 🛠 문제 해결 과정
-⚠️ API 통신 에러<br/>
+⚠️ LLM을 통한 답변의 정확도<br/>
 <table>
   <tr>
     <td>
     <strong>문제</strong>
     </td>
     <td>
-    <strong>API 통신을 하는 과정에서 에러 발생</strong>  
+    <strong>LLM을 통해 답변을 받았을 때, 답변의 신뢰도가 떨어짐</strong>  
     </td>
   </tr>
   <tr>
     <td>원인</td>
-    <td>동일한 출처의 리소스에만 접근하도록 제한</td>
+    <td>학습된 원래의 데이터는 과거 데이터이고, 많은 데이터를 학습했지만 신뢰도가 떨어짐</td>
   </tr>
   <tr>
     <td>해결</td>
-    <td>한 도메인 웹 페이지가 다른 도메인 을 가진 리소스에 액세스 할 수 있도록 CORS 사용</td>
+    <td>RAG기술을 사용하여 TOUR 4.0 관광정보 API 데이터를 기반으로 학습시킨 후 해당 값을 답변하도록 구현</td>
   </tr>
 </table><br/><br/>
 
-⚠️ 체인코드에서 사용자 정보 조회<br/>
+⚠️ 데이터베이스 설계<br/>
 <table>
   <tr>
     <td>
     <strong>문제</strong>
     </td>
     <td>
-    <strong>사용자 정보를 전체 불러오는 것에 어려움</strong>  
+    <strong>PyMongo를 통해 파이썬과 MongoDB를 사용하려고 설계</strong>  
     </td>
   </tr>
   <tr>
     <td>원인</td>
-    <td>처음에는 입력값을 받아 해당 데이터를 조회하는 방식을 가지고 수정</td>
+    <td>파이썬과 연동이 쉬운 MongoDB를 사용하려고 설계했으나 유저관리에서 검색해오는 과정들이 관계형 데이터베이스보다 아쉬움</td>
   </tr>
   <tr>
     <td>해결</td>
-    <td>해당 데이터를 모두 받아 Json으로 파싱 후 Key, Value 값을 호출하여 출력</td>
+    <td>MySQL을 사용하여 테이블을 설계하고 데이터베이스 기능들을 구현</td>
+  </tr>
+</table><br/><br/>
+
+⚠️ 다크모드 구현<br/>
+<table>
+  <tr>
+    <td>
+    <strong>문제</strong>
+    </td>
+    <td>
+    <strong>모든 페이지별 다크모드 구현 및 유지</strong>  
+    </td>
+  </tr>
+  <tr>
+    <td>원인</td>
+    <td>처음 구조할 때에 페이지별 상태를 설정하는 코드를 작성하여 유지보수가 힘듬</td>
+  </tr>
+  <tr>
+    <td>해결</td>
+    <td>상위 컴포넌트인 APP.js에서 React Hooks을 사용하여 상태관리를 해주고 하위 컴포넌트에 상태를 전달달</td>
   </tr>
 </table><br/><br/><br/><br/>
 
